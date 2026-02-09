@@ -1,19 +1,8 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import dynamic from 'next/dynamic';
-import { getBlock } from '@/lib/block-registry';
-import type { BlockModule } from '@/lib/block-registry';
+import { useState } from 'react';
+import { BlockRenderer } from '@/components/BlockRenderer';
 import styles from './preview.module.css';
-
-// Dynamically load the flower wheel block
-const FlowerWheelBlock = dynamic(
-    () => import('@/blocks/flower-wheel').then(mod => mod.Block),
-    {
-        loading: () => <div className={styles.loading}>Loading block...</div>,
-        ssr: false
-    }
-);
 
 export default function BlockPreviewPage() {
     const [showResult, setShowResult] = useState(false);
@@ -54,13 +43,12 @@ export default function BlockPreviewPage() {
 
             {/* Block Preview */}
             <div className={styles.previewArea}>
-                <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
-                    <FlowerWheelBlock
-                        input={sampleInput}
-                        onComplete={handleComplete}
-                        mode="preview"
-                    />
-                </Suspense>
+                <BlockRenderer
+                    blockId="flower-wheel"
+                    input={sampleInput}
+                    mode="preview"
+                    onComplete={handleComplete}
+                />
             </div>
 
             {/* Result Panel */}
