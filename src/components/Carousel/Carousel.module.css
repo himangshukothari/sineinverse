@@ -1,0 +1,115 @@
+/**
+ * Carousel Component Styles
+ * Netflix-style navigation with fade gradients
+ */
+
+.carouselWrapper {
+    position: relative;
+    overflow: visible;
+}
+
+.carousel {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 3rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel:active {
+    cursor: grabbing;
+}
+
+/* Navigation Zones */
+.navZone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.navZone.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Left Zone */
+.navZone.prev {
+    left: 0;
+    background: linear-gradient(to right,
+            rgba(254, 251, 246, 1) 0%,
+            rgba(254, 251, 246, 0.9) 40%,
+            transparent 100%);
+}
+
+/* Right Zone */
+.navZone.next {
+    right: 0;
+    background: linear-gradient(to left,
+            rgba(254, 251, 246, 1) 0%,
+            rgba(254, 251, 246, 0.9) 40%,
+            transparent 100%);
+}
+
+/* Arrow Icon */
+.navZone svg {
+    width: 32px;
+    height: 32px;
+    color: var(--charcoal);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.navZone:hover svg {
+    opacity: 0.8;
+}
+
+.navZone:active svg {
+    opacity: 1;
+    transform: scale(0.9);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .carousel {
+        padding: 1rem 1.5rem;
+    }
+
+    .navZone {
+        width: 40px;
+    }
+
+    .navZone svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* On touch devices, always show arrows slightly */
+@media (hover: none) {
+    .navZone.visible svg {
+        opacity: 0.4;
+    }
+
+    .navZone:active svg {
+        opacity: 1;
+    }
+}
