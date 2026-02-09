@@ -4,23 +4,27 @@
  * Blocks are dynamically loaded based on their manifest
  */
 
-import type { BlockManifest, BlockProps, BlockSchema } from '@/types/blocks';
+import type { BlockManifest, BlockSchema } from '@/types/blocks';
 import type { ComponentType } from 'react';
 
 // Block module interface - what each block exports
+// Using 'any' for Block component to allow different input/output types
 export interface BlockModule {
     manifest: BlockManifest;
     schema: BlockSchema;
-    Block: ComponentType<BlockProps>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Block: ComponentType<any>;
 }
 
 // Registry of all available blocks
-const blockRegistry = new Map<string, () => Promise<BlockModule>>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const blockRegistry = new Map<string, () => Promise<any>>();
 
 /**
  * Register a block for lazy loading
  */
-export function registerBlock(id: string, loader: () => Promise<BlockModule>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function registerBlock(id: string, loader: () => Promise<any>) {
     blockRegistry.set(id, loader);
 }
 
@@ -77,4 +81,3 @@ registerBlock('golden-ticket-reveal', () => import('@/blocks/golden-ticket-revea
 // registerBlock('intro-block', () => import('@/blocks/intro-block'));
 // registerBlock('wax-seal-reveal', () => import('@/blocks/wax-seal-reveal'));
 // registerBlock('finale-ask', () => import('@/blocks/finale-ask'));
-
