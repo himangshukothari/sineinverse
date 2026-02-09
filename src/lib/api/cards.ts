@@ -131,20 +131,27 @@ export async function updateCard(
 ): Promise<{ card: Card | null; error: string | null }> {
     const supabase = createAdminClient();
 
-    // Build update object
-    const updateData: Record<string, unknown> = {};
+    // Build update object with snake_case keys for database
+    const updateData: {
+        title?: string;
+        recipient_name?: string;
+        sender_name?: string;
+        blocks?: CardBlockData[];
+        status?: string;
+    } = {};
+
     if (input.title !== undefined) updateData.title = input.title;
     if (input.recipientName !== undefined) updateData.recipient_name = input.recipientName;
     if (input.senderName !== undefined) updateData.sender_name = input.senderName;
     if (input.blocks !== undefined) updateData.blocks = input.blocks;
     if (input.status !== undefined) updateData.status = input.status;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error } = await supabase
         .from('cards')
-        .update(updateData as any)
+        // @ts-ignore - Supabase types don't match our schema
+        .update(updateData)
         .eq('id', cardId)
-        .eq('user_id', userId) // Ensure ownership
+        .eq('user_id', userId)
         .select()
         .single();
 
