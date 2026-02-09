@@ -1,0 +1,389 @@
+.account {
+    min-height: 100vh;
+    background: var(--cream);
+}
+
+.content {
+    padding: 2rem 1.5rem;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 2rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #64748b;
+    margin-bottom: 2.5rem;
+}
+
+/* ============ LOGIN PROMPT ============ */
+.loginPrompt {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.loginIcon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.loginPrompt h2 {
+    font-size: 1.5rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+}
+
+.loginPrompt p {
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+.loginButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.googleBtn,
+.emailBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.googleBtn {
+    background: white;
+    border: 2px solid #e2e8f0;
+    color: var(--charcoal);
+}
+
+.googleBtn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.emailBtn {
+    background: var(--violet-500);
+    border: none;
+    color: white;
+}
+
+.emailBtn:hover {
+    background: var(--violet-600);
+}
+
+/* ============ STATS PREVIEW ============ */
+.statsPreview {
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.statsPreview h3 {
+    font-size: 0.875rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+
+.statsList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    color: var(--charcoal);
+}
+
+.statIcon {
+    font-size: 1.25rem;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+    .statsList {
+        grid-template-columns: 1fr;
+    }
+
+    .loginPrompt {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* ============ USER CARD (Logged In) ============ */
+.userCard {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.userAvatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--violet-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--violet-700);
+    font-size: 1.5rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.userAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.userInfo {
+    flex: 1;
+}
+
+.userInfo h2 {
+    font-size: 1.25rem;
+    color: var(--charcoal);
+    margin-bottom: 0.25rem;
+}
+
+.userInfo p {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.signOutBtn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.signOutBtn:hover {
+    border-color: #f43f5e;
+    color: #f43f5e;
+}
+
+/* ============ LIBRARY SECTION ============ */
+.librarySection {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.librarySection h3 {
+    font-size: 1.125rem;
+    color: var(--charcoal);
+    margin-bottom: 1rem;
+}
+
+.emptyLibrary {
+    text-align: center;
+    padding: 2rem;
+    background: var(--violet-50);
+    border-radius: 12px;
+}
+
+.emptyIcon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.emptyLibrary p {
+    color: #64748b;
+    margin-bottom: 1rem;
+}
+
+.createBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--violet-500);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.createBtn:hover {
+    background: var(--violet-600);
+}
+
+/* ============ LOADING ============ */
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--violet-100);
+    border-top-color: var(--violet-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 480px) {
+    .userCard {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .signOutBtn {
+        width: 100%;
+    }
+}
+
+/* ============ CARD GRID ============ */
+.cardGrid {
+    display: grid;
+    gap: 1rem;
+}
+
+.cardItem {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.cardItem:hover {
+    border-color: var(--violet-300);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.cardTitle {
+    font-weight: 600;
+    color: var(--charcoal);
+}
+
+.cardStatus {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cardStatus.draft {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.cardStatus.paid {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.cardStatus.sent {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.cardMeta {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+}
+
+.cardMeta p {
+    margin: 0.25rem 0;
+}
+
+.cardActions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.cardActions button,
+.cardActions a {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: none;
+}
+
+.linkBtn {
+    background: var(--violet-100);
+    color: var(--violet-700);
+}
+
+.linkBtn:hover {
+    background: var(--violet-200);
+}
+
+.viewBtn {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.viewBtn:hover {
+    background: #bae6fd;
+}
+
+.deleteBtn {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.deleteBtn:hover {
+    background: #fecaca;
+}

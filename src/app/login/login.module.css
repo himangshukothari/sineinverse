@@ -1,0 +1,112 @@
+.login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--violet-50) 0%, var(--cream) 50%, var(--rose-50) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    margin-bottom: 1.5rem;
+}
+
+.card h1 {
+    font-size: 1.75rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+.error {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.googleBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.googleBtn:hover {
+    border-color: var(--violet-300);
+    background: var(--violet-50);
+}
+
+.terms {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.terms a {
+    color: var(--violet-600);
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+/* Background decoration */
+.bgDecor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.bgDecor::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.bgDecor::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(244, 63, 94, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}

@@ -1,0 +1,344 @@
+/* ============ POLAROID MEMORIES BLOCK ============ */
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 5rem;
+    background: #faf5f0;
+    font-family: 'Georgia', serif;
+}
+
+/* ============ HEADER ============ */
+.header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+}
+
+.title {
+    font-size: clamp(2.5rem, 7vw, 3.5rem);
+    font-weight: normal;
+    font-style: italic;
+    color: #f43f5e;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* ============ STATS ============ */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #6b7280;
+}
+
+.restartBtn {
+    background: none;
+    border: none;
+    color: #f43f5e;
+    font-style: italic;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #fecdd3;
+}
+
+.restartBtn:hover {
+    color: #e11d48;
+}
+
+/* ============ GRID ============ */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 800px;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ============ POLAROID CARD ============ */
+.polaroidContainer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    cursor: pointer;
+    transition: transform 0.3s, z-index 0s;
+}
+
+.polaroidContainer.matched {
+    /* Matched cards have slight scale applied via inline style */
+    pointer-events: none;
+}
+
+.polaroid {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.7s;
+    transform-style: preserve-3d;
+}
+
+.polaroid.flipped {
+    transform: rotateY(180deg);
+}
+
+.polaroidBack,
+.polaroidFront {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 2px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.polaroidBack {
+    background: white;
+    border: 4px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.backPattern {
+    width: 100%;
+    height: 100%;
+    background: #fff1f2;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fecdd3' fill-opacity='0.5'%3E%3Crect x='0' y='0' width='10' height='10'/%3E%3Crect x='10' y='10' width='10' height='10'/%3E%3C/g%3E%3C/svg%3E");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.backHeart {
+    font-size: 2rem;
+    color: #fecdd3;
+    opacity: 0.6;
+}
+
+.polaroidFront {
+    transform: rotateY(180deg);
+    background: white;
+    padding: 0.5rem 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.photoArea {
+    flex: 1;
+    background: #f3f4f6;
+    position: relative;
+    overflow: hidden;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: develop 0.5s ease-out;
+}
+
+@keyframes develop {
+    0% {
+        opacity: 0;
+        filter: blur(4px);
+    }
+
+    100% {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+.photoOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+}
+
+.captionArea {
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+}
+
+.caption {
+    font-size: clamp(0.625rem, 2vw, 0.875rem);
+    font-style: italic;
+    color: #4b5563;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.matchHeart {
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
+    font-size: 1.5rem;
+    color: #f43f5e;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+/* ============ MODAL ============ */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 50;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem 2.5rem;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+.modalEmoji {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    animation: bounce 0.6s ease infinite;
+}
+
+.modalTitle {
+    font-size: 2rem;
+    font-style: italic;
+    color: #f43f5e;
+    margin: 0 0 0.5rem 0;
+}
+
+.modalSubtitle {
+    color: #6b7280;
+    margin: 0 0 2rem 0;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.playAgainBtn {
+    padding: 0.75rem 1.5rem;
+    background: #f43f5e;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+}
+
+.playAgainBtn:hover {
+    background: #e11d48;
+    transform: scale(1.05);
+}
+
+.continueBtn {
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #f43f5e;
+    border: 2px solid #fecdd3;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.continueBtn:hover {
+    background: #fff1f2;
+}
+
+/* ============ PREVIEW BADGE ============ */
+.previewBadge {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 9999px;
+    z-index: 100;
+}

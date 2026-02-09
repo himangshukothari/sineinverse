@@ -54,7 +54,7 @@ export type Occasion =
 export interface BlockProps<TInput = Record<string, unknown>, TOutput = Record<string, unknown>> {
     input: TInput;
     onComplete: (output: TOutput) => void;
-    mode: 'preview' | 'play';
+    mode: 'edit' | 'preview' | 'play';
     recipientName?: string;
     senderName?: string;
 }

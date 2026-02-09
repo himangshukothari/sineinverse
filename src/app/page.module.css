@@ -1,1405 +1,583 @@
-/**
- * LANDING PAGE STYLES
- * Premium, romantic, stunning visuals
- */
-
+/* ============ MAIN CONTAINER ============ */
 .main {
     min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
+    background: var(--cream);
 }
 
-/* ============ FLOATING HEARTS BACKGROUND ============ */
-.heartsBackground {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
-
-/* CSS Heart Shape - no emojis */
-.heart {
-    position: absolute;
-    width: 20px;
-    height: 18px;
-    opacity: 0.12;
-    animation: floatUp 15s linear infinite;
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 18px;
-    background: var(--rose-400);
-    border-radius: 12px 12px 0 0;
-}
-
-.heart::before {
-    left: 10px;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-}
-
-.heart::after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
-}
-
-@keyframes floatUp {
-    0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 0.15;
-    }
-
-    90% {
-        opacity: 0.15;
-    }
-
-    100% {
-        transform: translateY(-100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* ============ HEADER ============ */
+/* ============ HEADER (Like Pilot'in) ============ */
 .header {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
     z-index: 100;
+    background: var(--cream);
+    padding: 1rem 0;
+}
+
+.headerContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 3rem;
-    background: rgba(254, 251, 246, 0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(253, 164, 175, 0.2);
+    gap: 2rem;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--violet-700);
+    text-decoration: none;
 }
 
 .logoIcon {
     display: flex;
     align-items: center;
-    color: var(--rose-600);
-}
-
-.logoText {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--rose-700);
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--violet-100);
+    border-radius: 50%;
+    color: var(--violet-600);
 }
 
 .nav {
     display: flex;
-    align-items: center;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
-.navLink {
+.nav a {
     color: var(--charcoal);
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.95rem;
     transition: color 0.2s;
-}
-
-.navLink:hover {
-    color: var(--rose-600);
-}
-
-/* ============ HERO SECTION ============ */
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8rem 5rem 4rem;
-    gap: 4rem;
     position: relative;
-    z-index: 1;
 }
 
-.heroContent {
-    flex: 1;
-    max-width: 600px;
+.nav a:hover {
+    color: var(--violet-600);
 }
 
-.heroTag {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, var(--rose-100), var(--gold-100));
-    border-radius: 50px;
-    font-size: 0.9rem;
+.nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--violet-600);
+    transition: width 0.2s;
+}
+
+.nav a:hover::after {
+    width: 100%;
+}
+
+.ctaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--violet-500);
+    color: white;
     font-weight: 600;
-    color: var(--rose-700);
-    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ctaButton:hover {
+    background: var(--violet-600);
+    transform: translateY(-2px);
+}
+
+/* ============ HERO SECTION (Like Pilot'in) ============ */
+.hero {
+    padding: 5rem 2rem 4rem;
+    text-align: center;
 }
 
 .heroTitle {
-    font-size: 4rem;
+    font-size: clamp(3rem, 7vw, 5rem);
     font-weight: 700;
-    color: var(--charcoal);
     line-height: 1.1;
-    margin-bottom: 1.5rem;
-}
-
-.heroDescription {
-    font-size: 1.25rem;
-    color: #666;
-    margin-bottom: 2rem;
-    line-height: 1.7;
-}
-
-.heroCTA {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.heroSubtext {
-    font-size: 0.9rem;
-    color: #999;
-}
-
-/* Phone Mockup */
-.heroVisual {
-    flex: 0 0 auto;
-    position: relative;
-}
-
-.phoneFrame {
-    width: 300px;
-    height: 600px;
-    background: #1c1917;
-    border-radius: 40px;
-    padding: 12px;
-    box-shadow:
-        0 50px 100px rgba(0, 0, 0, 0.15),
-        0 0 0 4px #333;
-    animation: float 6s ease-in-out infinite;
-}
-
-.phoneScreen {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, var(--rose-100) 0%, var(--rose-200) 100%);
-    border-radius: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.mockCard {
-    text-align: center;
-    padding: 2rem;
-}
-
-/* CSS Heart in mock card */
-.mockHeart {
-    width: 60px;
-    height: 55px;
-    margin: 0 auto 1.5rem;
-    position: relative;
-    animation: heart-beat 2s ease-in-out infinite;
-}
-
-.mockHeart::before,
-.mockHeart::after {
-    content: '';
-    position: absolute;
-    width: 35px;
-    height: 55px;
-    background: var(--rose-500);
-    border-radius: 35px 35px 0 0;
-}
-
-.mockHeart::before {
-    left: 30px;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-}
-
-.mockHeart::after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
-}
-
-.mockTitle {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--rose-800);
-    margin-bottom: 0.5rem;
-}
-
-.mockSubtitle {
-    color: var(--rose-600);
-    margin-bottom: 1.5rem;
-}
-
-.mockButton {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: var(--rose-500);
-    color: white;
-    border-radius: 50px;
-    font-weight: 600;
-    animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.floatingBadge {
-    position: absolute;
-    bottom: 60px;
-    right: -80px;
-    background: white;
-    padding: 0.75rem 1.25rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    animation: float 4s ease-in-out infinite;
-    animation-delay: 1s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--charcoal);
-}
-
-.badgeIcon {
-    color: var(--rose-500);
-}
-
-/* ============ HOW IT WORKS ============ */
-.howItWorks {
-    padding: 6rem 5rem;
-    background: white;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
-.sectionTitle {
-    font-size: 2.5rem;
-    color: var(--charcoal);
-    margin-bottom: 0.5rem;
-}
-
-.sectionSubtitle {
-    font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 4rem;
-}
-
-.steps {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 2rem;
-    max-width: 1000px;
+    color: var(--violet-800);
+    max-width: 900px;
     margin: 0 auto;
 }
 
-.step {
-    flex: 1;
-    max-width: 280px;
-    text-align: center;
-    position: relative;
+.heroHighlight {
+    color: var(--violet-500);
 }
 
-.stepNumber {
-    position: absolute;
-    top: -10px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
-    background: var(--rose-500);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
+/* Cycling Sticker Animation */
+.sticker {
+    display: inline-block;
+    font-size: 0.9em;
+    margin: 0 0.15em;
+    animation: stickerPop 0.4s ease-out;
 }
 
-.stepIcon {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    color: var(--rose-500);
+@keyframes stickerPop {
+    0% {
+        transform: scale(0.5) rotate(-10deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.3) rotate(5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }
 
-.stepTitle {
-    font-size: 1.25rem;
-    color: var(--charcoal);
-    margin-bottom: 0.5rem;
+/* ============ TEMPLATE CARDS (Like Pilot'in's 3 boxes) ============ */
+.templatesSection {
+    padding: 0 2rem 5rem;
 }
 
-.stepDescription {
-    color: #666;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-.stepConnector {
-    color: var(--rose-300);
-    font-size: 2rem;
-    padding-top: 2.5rem;
-}
-
-/* ============ TEMPLATE CAROUSEL ============ */
-.templateSection {
-    padding: 6rem 0;
-    background: linear-gradient(180deg, white 0%, var(--rose-50) 100%);
-    position: relative;
-    z-index: 1;
-    text-align: center;
-}
-
-.carouselContainer {
-    overflow: hidden;
-    padding: 2rem 0;
-}
-
-.carousel {
-    display: flex;
+.templatesGrid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    padding: 1rem 3rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.carousel::-webkit-scrollbar {
-    display: none;
 }
 
 .templateCard {
-    flex: 0 0 280px;
-    scroll-snap-align: center;
-    background: white;
-    border-radius: 1.5rem;
+    position: relative;
+    display: block;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s var(--ease-bounce), box-shadow 0.3s;
-    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .templateCard:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(244, 63, 94, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.templatePreview {
-    height: 320px;
-    background: linear-gradient(135deg, var(--rose-100) 0%, var(--rose-200) 100%);
+/* PLACEHOLDER BOX - Very Visible */
+.templatePlaceholder {
+    aspect-ratio: 4/5;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
 }
 
-.templateScreen {
-    width: 140px;
-    height: 280px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
+.placeholderContent {
+    text-align: center;
+    color: white;
+    padding: 2rem;
 }
 
-.previewFrame {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.previewStep {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    opacity: 0.4;
-    transition: opacity 0.3s, background 0.3s;
-    color: var(--rose-600);
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-.previewStep svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* Hover animation - plays through steps */
-.templateCard:hover .previewStep[data-step="1"] {
-    opacity: 1;
-    background: var(--rose-50);
-    animation: highlightStep 2s ease-in-out infinite;
-    animation-delay: 0s;
-}
-
-.templateCard:hover .previewStep[data-step="2"] {
-    opacity: 1;
-    background: var(--rose-50);
-    animation: highlightStep 2s ease-in-out infinite;
-    animation-delay: 0.5s;
-}
-
-.templateCard:hover .previewStep[data-step="3"] {
-    opacity: 1;
-    background: var(--rose-50);
-    animation: highlightStep 2s ease-in-out infinite;
-    animation-delay: 1s;
-}
-
-.templateCard:hover .previewStep[data-step="4"] {
-    opacity: 1;
-    background: var(--rose-50);
-    animation: highlightStep 2s ease-in-out infinite;
-    animation-delay: 1.5s;
-}
-
-@keyframes highlightStep {
-
-    0%,
-    100% {
-        background: var(--rose-50);
-        transform: scale(1);
-    }
-
-    25% {
-        background: var(--rose-100);
-        transform: scale(1.05);
-    }
-
-    50% {
-        background: var(--rose-50);
-        transform: scale(1);
-    }
-}
-
-.miniHeart {
-    width: 16px;
-    height: 14px;
-    position: relative;
-}
-
-.miniHeart::before,
-.miniHeart::after {
-    content: '';
-    position: absolute;
-    width: 8px;
-    height: 14px;
-    background: var(--rose-400);
-    border-radius: 8px 8px 0 0;
-}
-
-.miniHeart::before {
-    left: 8px;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-}
-
-.miniHeart::after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
-}
-
-/* Custom template card */
-.templateCustom .templatePreview {
-    background: linear-gradient(135deg, var(--gold-100) 0%, var(--rose-100) 100%);
-}
-
-.customPreview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    color: var(--rose-600);
-}
-
-.customPreview svg {
-    opacity: 0.7;
-}
-
-.customPreview span {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.templateInfo {
-    padding: 1.25rem;
-    text-align: left;
-}
-
-.templateInfo h3 {
-    font-size: 1.1rem;
-    color: var(--charcoal);
-    margin-bottom: 0.25rem;
-}
-
-.templateInfo p {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-.templatePrice {
-    display: inline-block;
+.placeholderLabel {
+    display: block;
     font-size: 1rem;
     font-weight: 700;
-    color: var(--rose-600);
-}
-
-.carouselHint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: #999;
-    font-size: 0.85rem;
-    margin-top: 1rem;
-}
-
-.carouselHint svg {
-    animation: bounce-x 1s ease-in-out infinite alternate;
-}
-
-@keyframes bounce-x {
-    from {
-        transform: translateX(-3px);
-    }
-
-    to {
-        transform: translateX(3px);
-    }
-}
-
-/* ============ FEATURES ============ */
-.features {
-    padding: 6rem 5rem;
-    background: linear-gradient(180deg, var(--rose-50) 0%, var(--cream) 100%);
-    position: relative;
-    z-index: 1;
-}
-
-.featuresGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.feature {
-    background: white;
-    padding: 2rem;
-    border-radius: 1.5rem;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s var(--ease-bounce), box-shadow 0.3s;
-}
-
-.feature:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(244, 63, 94, 0.15);
-}
-
-.featureIcon {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    color: var(--rose-500);
-}
-
-.feature h3 {
-    font-size: 1.1rem;
-    color: var(--charcoal);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
-}
-
-.feature p {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* ============ BLOCKS CAROUSEL ============ */
-.blocksSection {
-    padding: 6rem 0;
-    background: white;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
-.blocksCarouselContainer {
-    overflow: hidden;
-    padding: 2rem 0;
-}
-
-.blocksCarousel {
-    display: flex;
-    gap: 1.5rem;
-    padding: 1rem 3rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.blocksCarousel::-webkit-scrollbar {
-    display: none;
-}
-
-.blockCard {
-    flex: 0 0 220px;
-    scroll-snap-align: center;
-    background: white;
-    border-radius: 1.25rem;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s var(--ease-bounce), box-shadow 0.3s;
-    cursor: pointer;
-}
-
-.blockCard:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(244, 63, 94, 0.2);
-}
-
-.blockPreview {
-    height: 200px;
-    background: linear-gradient(135deg, var(--rose-50) 0%, var(--rose-100) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.blockAnimation {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.blockFrame {
-    width: 120px;
-    height: 160px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-/* Intro block animation */
-.animStep {
-    width: 30px;
-    height: 4px;
-    background: var(--rose-200);
-    border-radius: 2px;
-    margin: 4px;
-    opacity: 0.5;
-}
-
-.blockCard:hover .animStep {
-    animation: fadeIn 1.5s ease-in-out infinite;
-}
-
-.blockCard:hover .animStep:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.blockCard:hover .animStep:nth-child(2) {
-    animation-delay: 0.3s;
-}
-
-.blockCard:hover .animStep:nth-child(3) {
-    animation-delay: 0.6s;
-}
-
-@keyframes fadeIn {
-
-    0%,
-    100% {
-        opacity: 0.3;
-        transform: scaleX(0.6);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scaleX(1);
-    }
-}
-
-/* Memory grid animation */
-.memoryGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-    padding: 10px;
-    width: 100%;
-}
-
-.memoryGrid span {
-    aspect-ratio: 1;
-    background: var(--rose-200);
-    border-radius: 4px;
-    transition: all 0.3s;
-}
-
-.blockCard:hover .memoryGrid span {
-    animation: flipCard 2s ease-in-out infinite;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(2) {
-    animation-delay: 0.15s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(4) {
-    animation-delay: 0.45s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(5) {
-    animation-delay: 0.6s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(6) {
-    animation-delay: 0.75s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(7) {
-    animation-delay: 0.9s;
-}
-
-.blockCard:hover .memoryGrid span:nth-child(8) {
-    animation-delay: 1.05s;
-}
-
-@keyframes flipCard {
-
-    0%,
-    100% {
-        background: var(--rose-200);
-        transform: rotateY(0);
-    }
-
-    50% {
-        background: var(--rose-400);
-        transform: rotateY(180deg);
-    }
-}
-
-/* Spin wheel animation */
-.spinWheel {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: conic-gradient(var(--rose-400) 0deg 60deg,
-            var(--rose-200) 60deg 120deg,
-            var(--rose-400) 120deg 180deg,
-            var(--rose-200) 180deg 240deg,
-            var(--rose-400) 240deg 300deg,
-            var(--rose-200) 300deg 360deg);
-    position: relative;
-}
-
-.wheelInner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.blockCard:hover .spinWheel {
-    animation: spin 1.5s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(720deg);
-    }
-}
-
-/* Scratch card animation */
-.scratchCard {
-    width: 80px;
-    height: 50px;
-    background: var(--gold-200);
+    opacity: 0.9;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 1rem;
     border-radius: 8px;
-    position: relative;
-    overflow: hidden;
 }
 
-.scratchOverlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #888 0%, #aaa 100%);
+.placeholderTemplate {
+    display: block;
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
 }
 
-.blockCard:hover .scratchOverlay {
-    animation: scratch 2s ease-in-out infinite;
-}
-
-@keyframes scratch {
-    0% {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-
-    50% {
-        clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-    }
-
-    100% {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-}
-
-/* Puzzle grid animation */
-.puzzleGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-    padding: 15px;
-    width: 100%;
-}
-
-.puzzleGrid span {
-    aspect-ratio: 1;
-    background: var(--rose-200);
-    border-radius: 3px;
-}
-
-.blockCard:hover .puzzleGrid span {
-    animation: shufflePuzzle 2s ease-in-out infinite;
-}
-
-.blockCard:hover .puzzleGrid span:nth-child(odd) {
-    animation-delay: 0.1s;
-}
-
-@keyframes shufflePuzzle {
-
-    0%,
-    100% {
-        transform: translate(0, 0);
-    }
-
-    25% {
-        transform: translate(2px, -2px);
-    }
-
-    50% {
-        transform: translate(-2px, 2px);
-    }
-
-    75% {
-        transform: translate(2px, 2px);
-    }
-}
-
-/* Treasure boxes animation */
-.treasureBoxes {
-    display: flex;
-    gap: 8px;
-}
-
-.treasureBoxes span {
-    width: 28px;
-    height: 28px;
-    background: var(--gold-300);
-    border-radius: 4px;
-    border-bottom: 4px solid var(--gold-400);
-}
-
-.blockCard:hover .treasureBoxes span {
-    animation: shake 0.5s ease-in-out infinite;
-}
-
-.blockCard:hover .treasureBoxes span:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.blockCard:hover .treasureBoxes span:nth-child(3) {
-    animation-delay: 0.2s;
-}
-
-@keyframes shake {
-
-    0%,
-    100% {
-        transform: rotate(0deg);
-    }
-
-    25% {
-        transform: rotate(-5deg);
-    }
-
-    75% {
-        transform: rotate(5deg);
-    }
-}
-
-/* Love meter animation */
-.loveMeter {
-    width: 30px;
-    height: 80px;
-    background: var(--rose-100);
-    border-radius: 15px;
-    overflow: hidden;
-    position: relative;
-}
-
-.meterFill {
+/* Label at Bottom of Card */
+.templateLabel {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 30%;
-    background: linear-gradient(to top, var(--rose-500), var(--rose-400));
-    border-radius: 0 0 15px 15px;
-}
-
-.blockCard:hover .meterFill {
-    animation: fillMeter 1.5s ease-out infinite;
-}
-
-@keyframes fillMeter {
-    0% {
-        height: 20%;
-    }
-
-    50% {
-        height: 90%;
-    }
-
-    100% {
-        height: 20%;
-    }
-}
-
-/* Balloons animation */
-.balloons {
+    padding: 1.5rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
-    width: 80px;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: white;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
 }
 
-.balloons span {
-    width: 20px;
-    height: 24px;
-    background: var(--rose-400);
-    border-radius: 50% 50% 50% 50%;
-    position: relative;
-}
-
-.balloons span::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    width: 1px;
-    height: 8px;
-    background: var(--rose-300);
-}
-
-.blockCard:hover .balloons span {
-    animation: floatBalloon 2s ease-in-out infinite;
-}
-
-.blockCard:hover .balloons span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.blockCard:hover .balloons span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-.blockCard:hover .balloons span:nth-child(4) {
-    animation-delay: 0.6s;
-}
-
-.blockCard:hover .balloons span:nth-child(5) {
-    animation-delay: 0.8s;
-}
-
-@keyframes floatBalloon {
-
-    0%,
-    100% {
-        transform: translateY(0) scale(1);
-    }
-
-    50% {
-        transform: translateY(-10px) scale(1.1);
-    }
-}
-
-/* Gift box animation */
-.giftBox {
-    position: relative;
-    width: 50px;
-    height: 55px;
-}
-
-.giftLid {
-    width: 54px;
-    height: 15px;
-    background: var(--rose-500);
-    border-radius: 4px;
-    position: absolute;
-    top: 0;
-    left: -2px;
-    transform-origin: bottom center;
-}
-
-.giftBase {
-    width: 50px;
-    height: 40px;
-    background: var(--rose-400);
-    border-radius: 4px;
-    position: absolute;
-    bottom: 0;
-}
-
-.giftBase::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 100%;
-    background: var(--gold-300);
-}
-
-.blockCard:hover .giftLid {
-    animation: openGift 2s ease-in-out infinite;
-}
-
-@keyframes openGift {
-
-    0%,
-    100% {
-        transform: rotate(0deg) translateY(0);
-    }
-
-    30% {
-        transform: rotate(-20deg) translateY(-10px);
-    }
-
-    50% {
-        transform: rotate(-20deg) translateY(-10px);
-    }
-
-    80% {
-        transform: rotate(0deg) translateY(0);
-    }
-}
-
-/* Finale heart animation */
-.finaleHeart {
-    width: 50px;
-    height: 45px;
-    position: relative;
-}
-
-.finaleHeart::before,
-.finaleHeart::after {
-    content: '';
-    position: absolute;
-    width: 28px;
-    height: 45px;
-    background: var(--rose-500);
-    border-radius: 28px 28px 0 0;
-}
-
-.finaleHeart::before {
-    left: 25px;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-}
-
-.finaleHeart::after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
-}
-
-.blockCard:hover .finaleHeart {
-    animation: heart-beat 1s ease-in-out infinite;
-}
-
-/* Block info */
-.blockInfo {
-    padding: 1rem;
-    text-align: left;
-}
-
-.blockInfo h3 {
-    font-size: 1rem;
-    color: var(--charcoal);
-    margin-bottom: 0.25rem;
-}
-
-.blockInfo p {
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-.blockCategory {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    background: var(--rose-100);
-    color: var(--rose-600);
-    font-size: 0.7rem;
+.templateLabel h3 {
+    font-size: 1.5rem;
     font-weight: 600;
-    border-radius: 4px;
+    line-height: 1.2;
+    margin: 0;
 }
 
-.blocksCount {
-    color: #999;
-    font-size: 0.9rem;
-    margin-top: 1rem;
+.templateArrow {
+    font-size: 1.5rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
 }
 
-/* ============ CTA SECTION ============ */
-.ctaSection {
-    padding: 6rem 5rem;
-    position: relative;
-    z-index: 1;
+.templateCard:hover .templateArrow {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-.ctaCard {
-    max-width: 700px;
+/* ============ PROCESS SECTION (Step 1 → 2 → 3) ============ */
+.processSection {
+    padding: 4rem 2rem;
+    background: var(--white);
+    border-top: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.processContainer {
+    max-width: 900px;
     margin: 0 auto;
-    text-align: center;
-    padding: 4rem;
-    background: linear-gradient(135deg, var(--rose-500) 0%, var(--rose-600) 50%, var(--rose-700) 100%);
-    border-radius: 2rem;
-    color: white;
-    box-shadow: 0 20px 60px rgba(244, 63, 94, 0.3);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
 }
 
-.ctaCard h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.ctaCard p {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    margin-bottom: 2rem;
-}
-
-.ctaCard .btn-primary {
-    background: white;
-    color: var(--rose-600);
-}
-
-.ctaCard .btn-primary:hover {
-    background: var(--rose-50);
-}
-
-/* ============ FOOTER ============ */
-.footer {
-    padding: 4rem 5rem;
-    background: var(--charcoal);
-    color: white;
-    position: relative;
-    z-index: 1;
-}
-
-.footerContent {
-    max-width: 1200px;
-    margin: 0 auto;
+.processStep {
+    flex: 1;
     text-align: center;
 }
 
-.footerLogo {
+.stepNumber {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    font-family: var(--font-display);
-    font-size: 1.5rem;
+    background: var(--violet-500);
+    color: white;
+    font-size: 1.25rem;
     font-weight: 700;
+    border-radius: 50%;
+}
+
+.processStep h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--charcoal);
+}
+
+.processStep p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.processArrow {
+    font-size: 1.5rem;
+    color: var(--violet-300);
+    margin-top: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* ============ BLOCKS SECTION (Netflix Carousel) ============ */
+.blocksSection {
+    padding: 4rem 0;
+    background: var(--violet-700);
+}
+
+.blocksContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.blocksSectionTitle {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
     margin-bottom: 0.5rem;
 }
 
-.footerTagline {
-    color: #999;
+.blocksSectionSubtitle {
+    color: var(--violet-200);
+    font-size: 1rem;
+    text-align: center;
     margin-bottom: 2rem;
+}
+
+.blocksCarousel {
+    padding: 1rem 2rem;
+}
+
+.blockBox {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.blockBox:hover {
+    background: rgba(139, 92, 246, 0.5);
+    transform: translateY(-4px);
+}
+
+.blockBoxIcon {
+    font-size: 2.5rem;
+}
+
+.blockBoxName {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    text-align: center;
+}
+
+/* CTA Box at end */
+.blockBoxCta {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    background: var(--violet-400);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.blockBoxCta span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+}
+
+.blockBoxCta:hover {
+    background: var(--violet-300);
+    transform: translateY(-4px);
+}
+
+/* ============ TESTIMONIALS SECTION ============ */
+.testimonialsSection {
+    padding: 5rem 2rem;
+    background: var(--cream);
+    text-align: center;
+}
+
+.testimonialsSection h2 {
+    font-size: 2rem;
+    color: var(--violet-800);
+    margin-bottom: 2.5rem;
+}
+
+.testimonialsGrid {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.testimonialCard {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+    text-align: left;
+}
+
+.testimonialCard p {
+    font-size: 1rem;
+    color: var(--charcoal);
+    font-style: italic;
+    margin: 0 0 1rem 0;
+    line-height: 1.6;
+}
+
+.testimonialName {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--violet-600);
+}
+
+/* ============ FOOTER (Pilot'in Style) ============ */
+.footer {
+    position: relative;
+    background: var(--violet-700);
+    color: white;
+    margin-top: 60px;
+}
+
+.footerWave {
+    position: absolute;
+    top: -59px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    overflow: hidden;
+}
+
+.footerWave svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.footerContent {
+    padding: 3rem 2rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footerMain {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footerBrand {
+    max-width: 300px;
+}
+
+.footerLogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.footerBrand p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 0;
 }
 
 .footerLinks {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 4rem;
 }
 
-.footerLinks a {
-    color: #ccc;
-    text-decoration: none;
-    transition: color 0.2s;
+.footerLinkGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-.footerLinks a:hover {
+.footerLinkGroup h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem 0;
+    opacity: 0.7;
+}
+
+.footerLinkGroup a {
     color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    transition: opacity 0.2s;
 }
 
-.copyright {
-    color: #666;
-    font-size: 0.85rem;
+.footerLinkGroup a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.footerBottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+    text-align: center;
+}
+
+.footerBottom p {
+    font-size: 0.875rem;
+    opacity: 0.6;
+    margin: 0;
 }
 
 /* ============ RESPONSIVE ============ */
-@media (max-width: 1024px) {
-    .hero {
-        flex-direction: column;
-        padding: 7rem 2rem 4rem;
-        text-align: center;
-    }
-
-    .heroTitle {
-        font-size: 3rem;
-    }
-
-    .heroCTA {
-        justify-content: center;
-    }
-
-    .heroVisual {
-        margin-top: 2rem;
-    }
-
-    .floatingBadge {
-        right: -40px;
-    }
-
-    .featuresGrid {
+@media (max-width: 900px) {
+    .templatesGrid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .steps {
+    .processContainer {
         flex-direction: column;
-        align-items: center;
+        gap: 1.5rem;
     }
 
-    .stepConnector {
+    .processArrow {
         transform: rotate(90deg);
-        padding: 0;
+    }
+
+    .testimonialsGrid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+
+    .footerMain {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .footerLinks {
+        flex-wrap: wrap;
+        gap: 2rem;
     }
 }
 
-@media (max-width: 640px) {
-    .header {
-        padding: 1rem 1.5rem;
+@media (max-width: 600px) {
+    .headerContent {
+        padding: 0 1rem;
     }
 
     .nav {
-        gap: 1rem;
-    }
-
-    .navLink {
         display: none;
     }
 
-    .hero {
-        padding: 6rem 1.5rem 3rem;
-    }
-
     .heroTitle {
-        font-size: 2.25rem;
+        font-size: 2.5rem;
     }
 
-    .heroDescription {
-        font-size: 1rem;
-    }
-
-    .phoneFrame {
-        width: 250px;
-        height: 500px;
-    }
-
-    .floatingBadge {
-        right: -20px;
-        font-size: 0.8rem;
-        padding: 0.5rem 1rem;
-    }
-
-    .howItWorks,
-    .features,
-    .ctaSection {
-        padding: 4rem 1.5rem;
-    }
-
-    .featuresGrid {
+    .templatesGrid {
         grid-template-columns: 1fr;
+        max-width: 350px;
     }
 
-    .ctaCard {
-        padding: 2.5rem 2rem;
+    .blockBox,
+    .blockBoxCta {
+        width: 120px;
+        height: 120px;
     }
 
-    .ctaCard h2 {
-        font-size: 1.75rem;
-    }
-
-    .footer {
-        padding: 3rem 1.5rem;
+    .footerLinks {
+        gap: 1.5rem;
     }
 }

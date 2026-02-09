@@ -1,0 +1,51 @@
+.library {
+    min-height: 100vh;
+    background: var(--cream);
+}
+
+.content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.empty h2 {
+    font-size: 1.5rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+}
+
+.empty p {
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+.startBtn {
+    padding: 1rem 2rem;
+    background: var(--violet-500);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.startBtn:hover {
+    background: var(--violet-600);
+    transform: translateY(-2px);
+}

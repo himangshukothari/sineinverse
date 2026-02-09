@@ -68,9 +68,13 @@ export async function getAllManifests(): Promise<BlockManifest[]> {
 // ============ REGISTER BLOCKS ============
 // Add blocks here as they are created
 
-// Example (uncomment when block exists):
+registerBlock('flower-wheel', () => import('@/blocks/flower-wheel'));
+registerBlock('memory-match', () => import('@/blocks/memory-match'));
+registerBlock('polaroid-memories', () => import('@/blocks/polaroid-memories'));
+registerBlock('golden-ticket-reveal', () => import('@/blocks/golden-ticket-reveal'));
+
+// Future blocks:
 // registerBlock('intro-block', () => import('@/blocks/intro-block'));
-// registerBlock('memory-match', () => import('@/blocks/memory-match'));
-// registerBlock('scratch-card', () => import('@/blocks/scratch-card'));
-// registerBlock('spin-wheel', () => import('@/blocks/spin-wheel'));
+// registerBlock('wax-seal-reveal', () => import('@/blocks/wax-seal-reveal'));
 // registerBlock('finale-ask', () => import('@/blocks/finale-ask'));
+
