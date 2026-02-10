@@ -19,6 +19,7 @@ interface CardData {
     sender_name: string;
     blocks: CardBlockData[];
     status: string;
+    expires_at: string | null;
 }
 
 // Generate a unique session ID for this card visit
@@ -39,6 +40,7 @@ export default function CardViewPage() {
     const [card, setCard] = useState<CardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [errorCode, setErrorCode] = useState<string | null>(null);
     const [currentBlockIndex, setCurrentBlockIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
@@ -65,6 +67,7 @@ export default function CardViewPage() {
             const data = await response.json();
 
             if (!response.ok) {
+                setErrorCode(data.code || null);
                 throw new Error(data.error || 'Card not found');
             }
 
@@ -152,10 +155,22 @@ export default function CardViewPage() {
         return (
             <div className={styles.container}>
                 <div className={styles.error}>
-                    <span className={styles.errorEmoji}>💔</span>
-                    <h2>Oops!</h2>
-                    <p>{error || 'Card not found'}</p>
-                    <a href="/" className={styles.homeLink}>Go to Homepage</a>
+                    <span className={styles.errorEmoji}>
+                        {errorCode === 'EXPIRED' ? '⏰' : errorCode === 'UNPAID' ? '🔒' : '💔'}
+                    </span>
+                    <h2>
+                        {errorCode === 'EXPIRED' ? 'Card Expired' : errorCode === 'UNPAID' ? 'Card Not Available' : 'Oops!'}
+                    </h2>
+                    <p>
+                        {errorCode === 'EXPIRED'
+                            ? 'This card has expired and is no longer available.'
+                            : errorCode === 'UNPAID'
+                                ? 'This card is not available yet. The sender hasn\'t activated it.'
+                                : (error || 'Card not found')}
+                    </p>
+                    <a href="/" className={styles.homeLink}>
+                        {errorCode === 'UNPAID' ? 'Create Your Own Card →' : 'Go to Homepage'}
+                    </a>
                 </div>
             </div>
         );

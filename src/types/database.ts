@@ -37,6 +37,8 @@ export interface Database {
                     updated_at: string;
                     paid_at: string | null;
                     sent_at: string | null;
+                    expires_at: string | null;
+                    transaction_id: string | null;
                 };
                 Insert: {
                     id?: string;
@@ -52,6 +54,8 @@ export interface Database {
                     updated_at?: string;
                     paid_at?: string | null;
                     sent_at?: string | null;
+                    expires_at?: string | null;
+                    transaction_id?: string | null;
                 };
                 Update: {
                     title?: string | null;
@@ -62,6 +66,8 @@ export interface Database {
                     updated_at?: string;
                     paid_at?: string | null;
                     sent_at?: string | null;
+                    expires_at?: string | null;
+                    transaction_id?: string | null;
                 };
             };
 
@@ -107,6 +113,24 @@ export interface Database {
                     user_agent?: string | null;
                 };
                 Update: {};
+            };
+
+            // App settings (key-value store for toggles)
+            app_settings: {
+                Row: {
+                    key: string;
+                    value: string;
+                    updated_at: string;
+                };
+                Insert: {
+                    key: string;
+                    value: string;
+                    updated_at?: string;
+                };
+                Update: {
+                    value?: string;
+                    updated_at?: string;
+                };
             };
         };
         Views: {};

@@ -27,6 +27,9 @@ export async function POST(request: NextRequest) {
         if (!blocks || blocks.length === 0) {
             return NextResponse.json({ error: 'At least one block is required' }, { status: 400 });
         }
+        if (blocks.length > 6) {
+            return NextResponse.json({ error: 'Maximum 6 blocks per card' }, { status: 400 });
+        }
 
         // Create card
         const { card, error } = await createCard({

@@ -14,6 +14,9 @@ interface CardData {
     sender_name: string;
     status: 'draft' | 'paid' | 'sent';
     created_at: string;
+    paid_at: string | null;
+    expires_at: string | null;
+    transaction_id: string | null;
     blocks: Array<{ blockId: string; order: number; input: Record<string, unknown> }>;
 }
 
@@ -131,6 +134,35 @@ export default function AccountPage() {
         window.location.href = '/lab';
     };
 
+    const handlePayCard = async (cardId: string) => {
+        try {
+            toast('Initiating payment...', 'info');
+            const response = await fetch('/api/payments/initiate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cardId }),
+            });
+
+            const data = await response.json();
+
+            if (data.free) {
+                // Payments disabled — card auto-activated
+                toast('Card activated for free! 🎉', 'success');
+                loadCards(); // Refresh
+                return;
+            }
+
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+            } else {
+                toast(data.error || 'Payment failed. Try again.', 'error');
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            toast('Payment initiation failed', 'error');
+        }
+    };
+
     // Format output data for display
     const formatOutputValue = (key: string, value: unknown): string => {
         if (typeof value === 'boolean') return value ? '✅ Yes' : '❌ No';
@@ -206,21 +238,39 @@ export default function AccountPage() {
                                                     <p>Created: {new Date(card.created_at).toLocaleDateString()}</p>
                                                 </div>
                                                 <div className={styles.cardActions}>
-                                                    <button className={styles.linkBtn} onClick={() => copyLink(card.slug)}>
-                                                        📋 Copy Link
-                                                    </button>
-                                                    <Link href={`/c/${card.slug}`} className={styles.viewBtn}>
-                                                        👁️ Preview
-                                                    </Link>
+                                                    {card.status === 'paid' ? (
+                                                        <>
+                                                            <button className={styles.linkBtn} onClick={() => copyLink(card.slug)}>
+                                                                📋 Copy Link
+                                                            </button>
+                                                            <Link href={`/c/${card.slug}`} className={styles.viewBtn}>
+                                                                👁️ Preview
+                                                            </Link>
+                                                            {card.expires_at && (
+                                                                <span className={styles.expiryInfo}>
+                                                                    ⏰ Expires: {new Date(card.expires_at).toLocaleDateString()}
+                                                                </span>
+                                                            )}
+                                                        </>
+                                                    ) : (
+                                                        <button
+                                                            className={styles.payBtn}
+                                                            onClick={() => handlePayCard(card.id)}
+                                                        >
+                                                            🔒 Pay ₹143 to Activate
+                                                        </button>
+                                                    )}
                                                     <button className={styles.editBtn} onClick={() => handleEditCard(card)}>
                                                         ✏️ Edit
                                                     </button>
-                                                    <button
-                                                        className={styles.analyticsBtn}
-                                                        onClick={() => toggleCardExpand(card.slug)}
-                                                    >
-                                                        {expandedCard === card.slug ? '▲ Hide' : '📊 Analytics'}
-                                                    </button>
+                                                    {card.status === 'paid' && (
+                                                        <button
+                                                            className={styles.analyticsBtn}
+                                                            onClick={() => toggleCardExpand(card.slug)}
+                                                        >
+                                                            {expandedCard === card.slug ? '▲ Hide' : '📊 Analytics'}
+                                                        </button>
+                                                    )}
                                                     <button className={styles.deleteBtn} onClick={() => handleDeleteCard(card.slug)}>
                                                         🗑️
                                                     </button>
