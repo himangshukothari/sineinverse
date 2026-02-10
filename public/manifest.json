@@ -1,0 +1,24 @@
+{
+    "name": "SineInverse",
+    "short_name": "SineInverse",
+    "description": "Create stunning, interactive greeting cards for Valentine's Day, Birthdays, and special occasions.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#d8ccef",
+    "theme_color": "#7c3aed",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "/logo-static.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "lifestyle",
+        "social",
+        "entertainment"
+    ],
+    "lang": "en"
+}

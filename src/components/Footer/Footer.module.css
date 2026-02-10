@@ -1,0 +1,146 @@
+/* ============ FOOTER COMPONENT ============ */
+
+.footer {
+    background: linear-gradient(180deg, #1e1033 0%, #0f0a1a 100%);
+    color: #c4b5fd;
+    padding: 3rem 0 1.5rem;
+    margin-top: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ============ TOP SECTION ============ */
+.top {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+
+.brand {
+    max-width: 360px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.logoImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.tagline {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #a78bfa;
+    opacity: 0.8;
+}
+
+/* ============ FOOTER LINKS ============ */
+.links {
+    display: flex;
+    gap: 3rem;
+}
+
+.linkCol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.linkCol h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #e9d5ff;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.linkCol a {
+    color: #a78bfa;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.linkCol a:hover {
+    color: white;
+}
+
+/* ============ DIVIDER ============ */
+.divider {
+    height: 1px;
+    background: rgba(167, 139, 250, 0.15);
+    margin-bottom: 1.25rem;
+}
+
+/* ============ BOTTOM ============ */
+.bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.copyright {
+    font-size: 0.8125rem;
+    color: #7c6aad;
+}
+
+.socials {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(167, 139, 250, 0.1);
+    color: #a78bfa;
+    transition: all 0.2s;
+}
+
+.socials a:hover {
+    background: rgba(167, 139, 250, 0.25);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+    .top {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .brand {
+        max-width: 100%;
+    }
+
+    .links {
+        gap: 2rem;
+    }
+
+    .bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}

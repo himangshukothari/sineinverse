@@ -18,6 +18,9 @@ export function Nav() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { data: session, status } = useSession();
 
+    // Hide nav on card viewer pages
+    if (pathname.startsWith('/c/')) return null;
+
     // Get active page ID from pathname
     const getActiveId = () => {
         if (pathname === '/') return 'home';
@@ -93,17 +96,6 @@ export function Nav() {
                             {link.name}
                         </Link>
                     ))}
-
-                    {/* DISCORD LINK */}
-                    <a
-                        href="https://discord.gg/sineinverse"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.navLink}
-                        onClick={() => setMenuOpen(false)}
-                    >
-                        Discord
-                    </a>
 
                     {/* AUTH SECTION */}
                     {status === 'loading' ? (

@@ -4,7 +4,6 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './account.module.css';
-import { Nav } from '@/components/Nav';
 import { useToast } from '@/components/Toast';
 
 interface CardData {
@@ -142,7 +141,6 @@ export default function AccountPage() {
 
     return (
         <div className={styles.account}>
-            <Nav />
 
             <main className={styles.content}>
                 <div className={styles.container}>

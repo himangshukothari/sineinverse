@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import styles from './page.module.css';
-import { Nav } from '@/components/Nav';
 
 /* ======= Data ======= */
 const heroStickers = ['❤️', '🎉', '🥳', '💕', '✨', '🎁', '💌', '💘', '🌹', '🎊'];
@@ -110,7 +109,6 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <Nav />
 
       {/* ━━━━━ HERO ━━━━━ */}
       <section className={styles.hero}>
