@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './account.module.css';
 import { Nav } from '@/components/Nav';
+import { useToast } from '@/components/Toast';
 
 interface CardData {
     id: string;
@@ -17,10 +18,28 @@ interface CardData {
     blocks: Array<{ blockId: string; order: number; input: Record<string, unknown> }>;
 }
 
+interface GameOutputData {
+    id: string;
+    block_id: string;
+    block_order: number;
+    output: Record<string, unknown>;
+    session_id: string | null;
+    played_at: string;
+}
+
+interface CardAnalytics {
+    totalViews: number;
+    totalSessions: number;
+    outputs: GameOutputData[];
+}
+
 export default function AccountPage() {
     const { data: session, status } = useSession();
     const [cards, setCards] = useState<CardData[]>([]);
     const [loadingCards, setLoadingCards] = useState(false);
+    const [analytics, setAnalytics] = useState<Record<string, CardAnalytics>>({});
+    const [expandedCard, setExpandedCard] = useState<string | null>(null);
+    const { toast } = useToast();
 
     // Load user's cards
     useEffect(() => {
@@ -44,6 +63,30 @@ export default function AccountPage() {
         }
     };
 
+    // Load analytics for a specific card
+    const loadAnalytics = async (slug: string) => {
+        if (analytics[slug]) return; // Already loaded
+
+        try {
+            const response = await fetch(`/api/cards/${slug}/analytics`);
+            if (response.ok) {
+                const data = await response.json();
+                setAnalytics(prev => ({ ...prev, [slug]: data }));
+            }
+        } catch (error) {
+            console.error('Failed to load analytics:', error);
+        }
+    };
+
+    const toggleCardExpand = (slug: string) => {
+        if (expandedCard === slug) {
+            setExpandedCard(null);
+        } else {
+            setExpandedCard(slug);
+            loadAnalytics(slug);
+        }
+    };
+
     const handleSignIn = () => {
         signIn('google');
     };
@@ -59,6 +102,7 @@ export default function AccountPage() {
             const response = await fetch(`/api/cards/${slug}`, { method: 'DELETE' });
             if (response.ok) {
                 setCards(cards.filter(c => c.slug !== slug));
+                toast('Card deleted', 'success');
             }
         } catch (error) {
             console.error('Failed to delete card:', error);
@@ -68,7 +112,15 @@ export default function AccountPage() {
     const copyLink = (slug: string) => {
         const link = `${window.location.origin}/c/${slug}`;
         navigator.clipboard.writeText(link);
-        alert('Link copied to clipboard!');
+        toast('Link copied to clipboard!', 'success');
+    };
+
+    // Format output data for display
+    const formatOutputValue = (key: string, value: unknown): string => {
+        if (typeof value === 'boolean') return value ? '✅ Yes' : '❌ No';
+        if (typeof value === 'number') return String(value);
+        if (typeof value === 'string') return value;
+        return JSON.stringify(value);
     };
 
     return (
@@ -78,16 +130,14 @@ export default function AccountPage() {
             <main className={styles.content}>
                 <div className={styles.container}>
                     <h1 className={styles.title}>Account</h1>
-                    <p className={styles.subtitle}>Manage your account and view your cards</p>
+                    <p className={styles.subtitle}>Manage your cards and view analytics</p>
 
                     {status === 'loading' ? (
-                        /* Loading State */
                         <div className={styles.loginPrompt}>
                             <div className={styles.loadingSpinner}></div>
                             <p>Loading...</p>
                         </div>
                     ) : session?.user ? (
-                        /* Logged In - Show Account Info */
                         <>
                             <div className={styles.userCard}>
                                 <div className={styles.userAvatar}>
@@ -101,10 +151,7 @@ export default function AccountPage() {
                                     <h2>{session.user.name}</h2>
                                     <p>{session.user.email}</p>
                                 </div>
-                                <button
-                                    className={styles.signOutBtn}
-                                    onClick={handleSignOut}
-                                >
+                                <button className={styles.signOutBtn} onClick={handleSignOut}>
                                     Sign Out
                                 </button>
                             </div>
@@ -144,22 +191,86 @@ export default function AccountPage() {
                                                     <p>Created: {new Date(card.created_at).toLocaleDateString()}</p>
                                                 </div>
                                                 <div className={styles.cardActions}>
-                                                    <button
-                                                        className={styles.linkBtn}
-                                                        onClick={() => copyLink(card.slug)}
-                                                    >
+                                                    <button className={styles.linkBtn} onClick={() => copyLink(card.slug)}>
                                                         📋 Copy Link
                                                     </button>
                                                     <Link href={`/c/${card.slug}`} className={styles.viewBtn}>
                                                         👁️ Preview
                                                     </Link>
                                                     <button
-                                                        className={styles.deleteBtn}
-                                                        onClick={() => handleDeleteCard(card.slug)}
+                                                        className={styles.analyticsBtn}
+                                                        onClick={() => toggleCardExpand(card.slug)}
                                                     >
+                                                        {expandedCard === card.slug ? '▲ Hide' : '📊 Analytics'}
+                                                    </button>
+                                                    <button className={styles.deleteBtn} onClick={() => handleDeleteCard(card.slug)}>
                                                         🗑️
                                                     </button>
                                                 </div>
+
+                                                {/* Analytics Panel */}
+                                                {expandedCard === card.slug && (
+                                                    <div className={styles.analyticsPanel}>
+                                                        {!analytics[card.slug] ? (
+                                                            <p className={styles.analyticsLoading}>Loading analytics...</p>
+                                                        ) : (
+                                                            <>
+                                                                <div className={styles.statsRow}>
+                                                                    <div className={styles.stat}>
+                                                                        <span className={styles.statValue}>
+                                                                            {analytics[card.slug].totalViews}
+                                                                        </span>
+                                                                        <span className={styles.statLabel}>Views</span>
+                                                                    </div>
+                                                                    <div className={styles.stat}>
+                                                                        <span className={styles.statValue}>
+                                                                            {analytics[card.slug].totalSessions}
+                                                                        </span>
+                                                                        <span className={styles.statLabel}>Play Sessions</span>
+                                                                    </div>
+                                                                    <div className={styles.stat}>
+                                                                        <span className={styles.statValue}>
+                                                                            {analytics[card.slug].outputs.length}
+                                                                        </span>
+                                                                        <span className={styles.statLabel}>Interactions</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                {analytics[card.slug].outputs.length > 0 ? (
+                                                                    <div className={styles.outputsList}>
+                                                                        <h4>Block Responses</h4>
+                                                                        {analytics[card.slug].outputs.map((out, idx) => (
+                                                                            <div key={out.id || idx} className={styles.outputItem}>
+                                                                                <div className={styles.outputHeader}>
+                                                                                    <span className={styles.outputBlock}>
+                                                                                        🧩 {out.block_id}
+                                                                                    </span>
+                                                                                    <span className={styles.outputTime}>
+                                                                                        {new Date(out.played_at).toLocaleString()}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <div className={styles.outputData}>
+                                                                                    {Object.entries(out.output).map(([key, value]) => (
+                                                                                        <div key={key} className={styles.outputRow}>
+                                                                                            <span className={styles.outputKey}>{key}:</span>
+                                                                                            <span className={styles.outputVal}>
+                                                                                                {formatOutputValue(key, value)}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <p className={styles.noInteractions}>
+                                                                        No interactions yet. Share your card to see responses! 💌
+                                                                    </p>
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -167,7 +278,6 @@ export default function AccountPage() {
                             </div>
                         </>
                     ) : (
-                        /* Not Logged In - Show Sign In */
                         <>
                             <div className={styles.loginPrompt}>
                                 <div className={styles.loginIcon}>👤</div>
@@ -175,10 +285,7 @@ export default function AccountPage() {
                                 <p>Create an account to save your cards and track analytics</p>
 
                                 <div className={styles.loginButtons}>
-                                    <button
-                                        className={styles.googleBtn}
-                                        onClick={handleSignIn}
-                                    >
+                                    <button className={styles.googleBtn} onClick={handleSignIn}>
                                         <svg width="20" height="20" viewBox="0 0 24 24">
                                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />

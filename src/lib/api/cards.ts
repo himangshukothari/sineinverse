@@ -104,13 +104,21 @@ export async function getCardById(id: string): Promise<{ card: Card | null; erro
 /**
  * Get all cards for a user
  */
-export async function getUserCards(userId: string): Promise<{ cards: Card[]; error: string | null }> {
+export async function getUserCards(userId: string, userEmail?: string): Promise<{ cards: Card[]; error: string | null }> {
     const supabase = createAdminClient();
 
-    const { data, error } = await supabase
+    // Query by email (more reliable across sessions) with fallback to user_id
+    let query = supabase
         .from('cards')
-        .select('*')
-        .eq('user_id', userId)
+        .select('*');
+
+    if (userEmail) {
+        query = query.eq('user_email', userEmail);
+    } else {
+        query = query.eq('user_id', userId);
+    }
+
+    const { data, error } = await query
         .order('created_at', { ascending: false });
 
     if (error) {

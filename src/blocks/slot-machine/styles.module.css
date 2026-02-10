@@ -1,0 +1,370 @@
+/* ============ SLOT MACHINE BLOCK ============ */
+
+.container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+}
+
+/* ===== SKINS ===== */
+.container[data-skin="vegas"] {
+    background: linear-gradient(135deg, #7c2d12 0%, #991b1b 50%, #7c2d12 100%);
+}
+
+.container[data-skin="vegas"] .title {
+    color: #fef3c7;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.container[data-skin="vegas"] .machine {
+    background: linear-gradient(180deg, #fbbf24, #d97706);
+}
+
+.container[data-skin="vegas"] .display {
+    background: #1a1a2e;
+}
+
+.container[data-skin="vegas"] .reelWindow {
+    background: #111827;
+    border-color: #fbbf24;
+}
+
+.container[data-skin="vegas"] .spinBtn {
+    background: linear-gradient(180deg, #ef4444, #b91c1c);
+    color: #fef3c7;
+}
+
+.container[data-skin="vegas"] .light {
+    background: #fbbf24;
+}
+
+.container[data-skin="vegas"] .continueBtn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.container[data-skin="vegas"] .hint {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.container[data-skin="vegas"] .winLine {
+    background: #fbbf24;
+}
+
+.container[data-skin="cute"] {
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+}
+
+.container[data-skin="cute"] .machine {
+    background: linear-gradient(180deg, #f9a8d4, #ec4899);
+    border-radius: 24px;
+}
+
+.container[data-skin="cute"] .display {
+    background: white;
+}
+
+.container[data-skin="cute"] .reelWindow {
+    background: #fff0f6;
+    border-color: #f9a8d4;
+}
+
+.container[data-skin="cute"] .spinBtn {
+    background: linear-gradient(180deg, #ec4899, #db2777);
+    color: white;
+}
+
+.container[data-skin="cute"] .light {
+    background: #f9a8d4;
+}
+
+.container[data-skin="cute"] .continueBtn {
+    background: linear-gradient(135deg, #ec4899, #a855f7);
+}
+
+.container[data-skin="cute"] .winLine {
+    background: #ec4899;
+}
+
+.container[data-skin="midnight"] {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+}
+
+.container[data-skin="midnight"] .title {
+    color: #e2e8f0;
+}
+
+.container[data-skin="midnight"] .machine {
+    background: linear-gradient(180deg, #312e81, #1e1b4b);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.container[data-skin="midnight"] .display {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.container[data-skin="midnight"] .reelWindow {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.container[data-skin="midnight"] .spinBtn {
+    background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+    color: white;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.container[data-skin="midnight"] .light {
+    background: #a78bfa;
+    box-shadow: 0 0 8px rgba(167, 139, 250, 0.5);
+}
+
+.container[data-skin="midnight"] .continueBtn {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.container[data-skin="midnight"] .hint {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.container[data-skin="midnight"] .winLine {
+    background: #a78bfa;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+}
+
+/* ===== TITLE ===== */
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+}
+
+/* ===== MACHINE ===== */
+.machine {
+    padding: 1.25rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.display {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    position: relative;
+}
+
+/* ===== REEL WINDOW ===== */
+.reelWindow {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.reelInner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reelWindow.spinning .reelInner {
+    animation: spinReel 0.2s linear infinite;
+}
+
+@keyframes spinReel {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.reelWindow.winning {
+    animation: winPulse 0.5s ease infinite alternate;
+}
+
+@keyframes winPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.08);
+    }
+}
+
+.symbol {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+/* ===== WIN LINE ===== */
+.winLine {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    top: 50%;
+    height: 3px;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 0.3s;
+}
+
+.winLineActive {
+    opacity: 1;
+    animation: winLineFlash 0.4s linear infinite;
+}
+
+@keyframes winLineFlash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* ===== SPIN BTN ===== */
+.spinBtn {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.125rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.spinBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.spinBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ===== LIGHTS ===== */
+.lights {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.light {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.lightFlash {
+    animation: lightBlink 0.6s ease infinite alternate;
+}
+
+@keyframes lightBlink {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* ===== PRIZE ===== */
+.prizeCard {
+    margin-top: 1.5rem;
+    padding: 1.5rem 2rem;
+    background: white;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: prizeReveal 0.5s var(--ease-bounce);
+    max-width: 320px;
+}
+
+@keyframes prizeReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.prizeTitle {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--charcoal);
+}
+
+.prizeText {
+    font-size: 1rem;
+    color: #374151;
+    margin: 0 0 1.25rem 0;
+}
+
+.continueBtn {
+    padding: 0.875rem 2rem;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.continueBtn:hover {
+    transform: translateY(-2px);
+}
+
+.hint {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+@media (max-width: 400px) {
+    .reelWindow {
+        width: 65px;
+        height: 65px;
+    }
+
+    .symbol {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,253 @@
+/* ============ PHOTO PUZZLE BLOCK ============ */
+
+.container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* ===== SKINS ===== */
+.container[data-skin="classic"] {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.container[data-skin="classic"] .tile {
+    background: white;
+    border: 2px solid #cbd5e1;
+}
+
+.container[data-skin="classic"] .tile:hover:not(:disabled) {
+    border-color: #8b5cf6;
+    background: #f5f3ff;
+}
+
+.container[data-skin="classic"] .continueBtn {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.container[data-skin="neon"] {
+    background: linear-gradient(135deg, #0f0a1a 0%, #1a1033 100%);
+}
+
+.container[data-skin="neon"] .title {
+    color: #e2e8f0;
+}
+
+.container[data-skin="neon"] .moveCount {
+    color: #a78bfa;
+}
+
+.container[data-skin="neon"] .tile {
+    background: rgba(139, 92, 246, 0.1);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.container[data-skin="neon"] .tile:hover:not(:disabled) {
+    border-color: #a855f7;
+    background: rgba(139, 92, 246, 0.2);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.container[data-skin="neon"] .empty {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: transparent;
+}
+
+.container[data-skin="neon"] .continueBtn {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.container[data-skin="neon"] .winMsg,
+.container[data-skin="neon"] .winMoves {
+    color: #e2e8f0;
+}
+
+.container[data-skin="warm"] {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.container[data-skin="warm"] .tile {
+    background: #fefce8;
+    border: 2px solid #fde68a;
+}
+
+.container[data-skin="warm"] .tile:hover:not(:disabled) {
+    border-color: #f59e0b;
+    background: #fef9c3;
+}
+
+.container[data-skin="warm"] .empty {
+    background: #fef3c7;
+    border-color: transparent;
+}
+
+.container[data-skin="warm"] .continueBtn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* ===== TITLE ===== */
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+
+.moveCount {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+}
+
+/* ===== GRID ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 270px;
+    height: 270px;
+    margin-bottom: 1.5rem;
+}
+
+.tile {
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0;
+    padding: 0;
+}
+
+.tile:active:not(:disabled) {
+    transform: scale(0.93);
+}
+
+.empty {
+    background: #f1f5f9;
+    border-color: transparent !important;
+    cursor: default;
+}
+
+.tileEmoji {
+    font-size: 2rem;
+    line-height: 1;
+    transition: transform 0.15s;
+}
+
+.solvedTile {
+    animation: solvedPop 0.4s var(--ease-bounce) both;
+    background: #ecfdf5;
+    border-color: #10b981;
+}
+
+.solvedTile:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.solvedTile:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.solvedTile:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.solvedTile:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+.solvedTile:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+.solvedTile:nth-child(6) {
+    animation-delay: 0.25s;
+}
+
+.solvedTile:nth-child(7) {
+    animation-delay: 0.3s;
+}
+
+.solvedTile:nth-child(8) {
+    animation-delay: 0.35s;
+}
+
+@keyframes solvedPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ===== WIN ===== */
+.winArea {
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.winMsg {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin: 0 0 0.25rem 0;
+}
+
+.winMoves {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0 0 1.25rem 0;
+}
+
+.continueBtn {
+    padding: 0.875rem 2rem;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.continueBtn:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 360px) {
+    .grid {
+        width: 240px;
+        height: 240px;
+    }
+
+    .tileEmoji {
+        font-size: 1.75rem;
+    }
+}

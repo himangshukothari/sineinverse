@@ -58,7 +58,7 @@ export async function GET() {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { cards, error } = await getUserCards(session.user.id);
+        const { cards, error } = await getUserCards(session.user.id, session.user.email || undefined);
 
         if (error) {
             return NextResponse.json({ error }, { status: 500 });

@@ -387,3 +387,155 @@
 .deleteBtn:hover {
     background: #fecaca;
 }
+
+/* ============ ANALYTICS ============ */
+.analyticsBtn {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.analyticsBtn:hover {
+    background: #dcfce7;
+}
+
+.analyticsPanel {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #faf5ff, #f0f9ff);
+    border-radius: 12px;
+    border: 1px solid #e9d5ff;
+    animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        max-height: 800px;
+    }
+}
+
+.analyticsLoading {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+    padding: 1rem 0;
+}
+
+.statsRow {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.stat {
+    flex: 1;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    padding: 0.75rem 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.statValue {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--violet-600);
+}
+
+.statLabel {
+    font-size: 0.7rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.outputsList {
+    margin-top: 0.5rem;
+}
+
+.outputsList h4 {
+    font-size: 0.875rem;
+    color: var(--charcoal);
+    margin-bottom: 0.75rem;
+}
+
+.outputItem {
+    background: white;
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.outputHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.outputBlock {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--violet-700);
+}
+
+.outputTime {
+    font-size: 0.7rem;
+    color: #94a3b8;
+}
+
+.outputData {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.outputRow {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.outputKey {
+    color: #64748b;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+.outputVal {
+    color: var(--charcoal);
+    font-weight: 600;
+}
+
+.noInteractions {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    padding: 1rem 0;
+}
+
+@media (max-width: 480px) {
+    .statsRow {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .stat {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .statValue {
+        font-size: 1.25rem;
+    }
+}

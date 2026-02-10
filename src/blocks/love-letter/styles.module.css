@@ -1,0 +1,339 @@
+/* ============ LOVE LETTER BLOCK ============ */
+
+.container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== SKIN: VINTAGE ===== */
+.container[data-skin="vintage"] {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 30%, #fef9c3 60%, #fffbeb 100%);
+}
+
+.container[data-skin="vintage"] .paper {
+    background: linear-gradient(180deg, #fefce8 0%, #fef9c3 40%, #fef3c7 100%);
+    border: 1px solid #d4a574;
+    box-shadow: 4px 4px 20px rgba(120, 80, 40, 0.15), inset 0 0 60px rgba(200, 160, 100, 0.08);
+}
+
+.container[data-skin="vintage"] .greeting {
+    color: #78350f;
+    font-family: 'Georgia', serif;
+}
+
+.container[data-skin="vintage"] .messageText {
+    color: #451a03;
+    font-family: 'Georgia', serif;
+}
+
+.container[data-skin="vintage"] .closing {
+    color: #78350f;
+}
+
+.container[data-skin="vintage"] .signature {
+    color: #92400e;
+}
+
+.container[data-skin="vintage"] .cursor {
+    background: #78350f;
+}
+
+/* ===== SKIN: MODERN ===== */
+.container[data-skin="modern"] {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.container[data-skin="modern"] .paper {
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+.container[data-skin="modern"] .greeting {
+    color: #0f172a;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.container[data-skin="modern"] .messageText {
+    color: #334155;
+    font-family: var(--font-body);
+}
+
+.container[data-skin="modern"] .closing {
+    color: #475569;
+}
+
+.container[data-skin="modern"] .signature {
+    color: #8b5cf6;
+}
+
+.container[data-skin="modern"] .cursor {
+    background: #8b5cf6;
+}
+
+.container[data-skin="modern"] .sealBtn {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+/* ===== SKIN: NEON ===== */
+.container[data-skin="neon"] {
+    background: linear-gradient(135deg, #0f0a1a 0%, #1a1033 50%, #0d0d2b 100%);
+}
+
+.container[data-skin="neon"] .paper {
+    background: rgba(20, 10, 40, 0.85);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.1), inset 0 0 40px rgba(139, 92, 246, 0.03);
+}
+
+.container[data-skin="neon"] .greeting {
+    color: #c084fc;
+    text-shadow: 0 0 20px rgba(192, 132, 252, 0.5);
+}
+
+.container[data-skin="neon"] .messageText {
+    color: #e2e8f0;
+}
+
+.container[data-skin="neon"] .closing {
+    color: #a78bfa;
+}
+
+.container[data-skin="neon"] .signature {
+    color: #f0abfc;
+    text-shadow: 0 0 15px rgba(240, 171, 252, 0.5);
+}
+
+.container[data-skin="neon"] .cursor {
+    background: #c084fc;
+    box-shadow: 0 0 10px rgba(192, 132, 252, 0.8);
+}
+
+.container[data-skin="neon"] .sealBtn {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+}
+
+.container[data-skin="neon"] .doneText {
+    color: #c084fc;
+}
+
+/* ===== PAPER ===== */
+.paper {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 4px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    transform: rotate(-1deg);
+    animation: paperDrop 0.8s var(--ease-bounce) forwards;
+}
+
+@keyframes paperDrop {
+    0% {
+        opacity: 0;
+        transform: rotate(-1deg) translateY(-40px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotate(-1deg) translateY(0) scale(1);
+    }
+}
+
+/* ===== DECORATIVE LINE ===== */
+.paperLine {
+    position: absolute;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.06) 2px, rgba(0, 0, 0, 0.06) 4px);
+}
+
+.paperLine:nth-child(1) {
+    top: 20%;
+}
+
+.paperLine:nth-child(2) {
+    top: 35%;
+}
+
+.paperLine:nth-child(3) {
+    top: 50%;
+}
+
+.paperLine:nth-child(4) {
+    top: 65%;
+}
+
+.paperLine:nth-child(5) {
+    top: 80%;
+}
+
+/* ===== TEXT ELEMENTS ===== */
+.greeting {
+    font-size: 1.375rem;
+    font-style: italic;
+    margin: 0 0 1.5rem 0;
+    opacity: 0;
+    animation: fadeWord 0.6s ease forwards;
+    animation-delay: 0.5s;
+}
+
+.messageWrap {
+    min-height: 120px;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.messageText {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Typewriter cursor */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.closing {
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0 0 0.25rem 0;
+    opacity: 0;
+}
+
+.signature {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    opacity: 0;
+}
+
+.closing.show,
+.signature.show {
+    animation: fadeWord 0.6s ease forwards;
+}
+
+@keyframes fadeWord {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== SEAL / CTA ===== */
+.sealBtn {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 0.875rem 2rem;
+    background: linear-gradient(135deg, #dc2626, #be123c);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+}
+
+.sealBtn.show {
+    animation: fadeWord 0.5s ease forwards;
+}
+
+.sealBtn:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* ===== FLOATING HEARTS ===== */
+.heart {
+    position: absolute;
+    font-size: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    animation: heartFloat 4s ease-in forwards;
+}
+
+@keyframes heartFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+    }
+
+    20% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-200px) scale(1.2) rotate(20deg);
+    }
+}
+
+/* ===== DONE STATE ===== */
+.doneText {
+    font-size: 0.8125rem;
+    text-align: center;
+    color: #94a3b8;
+    margin-top: 1rem;
+    opacity: 0;
+}
+
+.doneText.show {
+    animation: fadeWord 0.5s ease 0.3s forwards;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .paper {
+        padding: 2rem 1.5rem;
+    }
+
+    .greeting {
+        font-size: 1.25rem;
+    }
+
+    .messageText {
+        font-size: 0.9375rem;
+    }
+}

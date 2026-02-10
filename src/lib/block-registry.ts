@@ -77,7 +77,16 @@ registerBlock('memory-match', () => import('@/blocks/memory-match'));
 registerBlock('polaroid-memories', () => import('@/blocks/polaroid-memories'));
 registerBlock('golden-ticket-reveal', () => import('@/blocks/golden-ticket-reveal'));
 
-// Future blocks:
-// registerBlock('intro-block', () => import('@/blocks/intro-block'));
-// registerBlock('wax-seal-reveal', () => import('@/blocks/wax-seal-reveal'));
-// registerBlock('finale-ask', () => import('@/blocks/finale-ask'));
+// Phase 2 blocks
+registerBlock('love-letter', () => import('@/blocks/love-letter'));
+registerBlock('envelope-opening', () => import('@/blocks/envelope-opening'));
+registerBlock('love-quiz', () => import('@/blocks/love-quiz'));
+registerBlock('gift-box-unwrap', () => import('@/blocks/gift-box-unwrap'));
+registerBlock('fortune-cookie', () => import('@/blocks/fortune-cookie'));
+registerBlock('countdown-timer', () => import('@/blocks/countdown-timer'));
+registerBlock('promise-cards', () => import('@/blocks/promise-cards'));
+registerBlock('slot-machine', () => import('@/blocks/slot-machine'));
+registerBlock('confession-wall', () => import('@/blocks/confession-wall'));
+registerBlock('love-meter', () => import('@/blocks/love-meter'));
+registerBlock('finale-ask', () => import('@/blocks/finale-ask'));
+registerBlock('photo-puzzle', () => import('@/blocks/photo-puzzle'));
