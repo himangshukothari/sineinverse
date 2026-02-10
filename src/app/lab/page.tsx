@@ -378,6 +378,21 @@ export default function LabPage() {
                 </button>
             </div>
 
+            {/* ===== Mobile Name Inputs ===== */}
+            <div className={styles.mobileNameInputs}>
+                <div className={styles.nameField}>
+                    <label>To</label>
+                    <input type="text" placeholder="Their name" value={recipientName}
+                        onChange={(e) => setRecipientName(e.target.value)} />
+                </div>
+                <span className={styles.nameSep}>→</span>
+                <div className={styles.nameField}>
+                    <label>From</label>
+                    <input type="text" placeholder="Your name" value={senderName}
+                        onChange={(e) => setSenderName(e.target.value)} />
+                </div>
+            </div>
+
             {/* ===== Main Content ===== */}
             <div className={styles.content}>
                 {/* ===== CENTER: Card Flow ===== */}

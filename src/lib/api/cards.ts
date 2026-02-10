@@ -4,11 +4,26 @@
 
 import { createAdminClient } from '@/lib/supabase/server';
 import type { Card, CardBlockData } from '@/types/database';
-import { nanoid } from 'nanoid';
+// Generate unique slug for card URL using recipient name + 4 random chars
+function generateSlug(recipientName: string): string {
+    // Clean the name: lowercase, replace spaces/special chars with hyphens, trim
+    const clean = recipientName
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '')  // remove special chars
+        .replace(/\s+/g, '-')           // spaces to hyphens
+        .replace(/-+/g, '-')            // collapse multiple hyphens
+        .replace(/^-|-$/g, '')          // trim leading/trailing hyphens
+        .slice(0, 20);                  // max 20 chars from name
 
-// Generate unique slug for card URL
-function generateSlug(): string {
-    return nanoid(10); // e.g., "V1StGXR8_Z"
+    // Generate 4 random alphanumeric chars
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let suffix = '';
+    for (let i = 0; i < 4; i++) {
+        suffix += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return `${clean || 'card'}-${suffix}`; // e.g., "priya-x8mq"
 }
 
 export interface CreateCardInput {
@@ -33,7 +48,7 @@ export interface UpdateCardInput {
  */
 export async function createCard(input: CreateCardInput): Promise<{ card: Card | null; error: string | null }> {
     const supabase = createAdminClient();
-    const slug = generateSlug();
+    const slug = generateSlug(input.recipientName);
 
     const insertData = {
         user_id: input.userId,

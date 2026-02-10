@@ -115,6 +115,23 @@ export default function AccountPage() {
         toast('Link copied to clipboard!', 'success');
     };
 
+    const handleEditCard = (card: CardData) => {
+        // Save card data to localStorage so the lab picks it up
+        const labDraft = {
+            recipientName: card.recipient_name,
+            senderName: card.sender_name,
+            cardBlocks: (card.blocks || []).map(b => ({
+                blockType: b.blockId,
+                name: b.blockId, // Will be rehydrated by lab
+                emoji: '🧩',
+                configured: true,
+                inputData: b.input || {},
+            })),
+        };
+        localStorage.setItem('sineinverse_lab_draft', JSON.stringify(labDraft));
+        window.location.href = '/lab';
+    };
+
     // Format output data for display
     const formatOutputValue = (key: string, value: unknown): string => {
         if (typeof value === 'boolean') return value ? '✅ Yes' : '❌ No';
@@ -197,6 +214,9 @@ export default function AccountPage() {
                                                     <Link href={`/c/${card.slug}`} className={styles.viewBtn}>
                                                         👁️ Preview
                                                     </Link>
+                                                    <button className={styles.editBtn} onClick={() => handleEditCard(card)}>
+                                                        ✏️ Edit
+                                                    </button>
                                                     <button
                                                         className={styles.analyticsBtn}
                                                         onClick={() => toggleCardExpand(card.slug)}

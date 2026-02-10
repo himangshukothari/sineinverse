@@ -379,6 +379,15 @@
     background: #bae6fd;
 }
 
+.editBtn {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.editBtn:hover {
+    background: #fde68a;
+}
+
 .deleteBtn {
     background: #fee2e2;
     color: #dc2626;
