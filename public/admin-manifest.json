@@ -1,0 +1,24 @@
+{
+    "name": "SineInverse Admin",
+    "short_name": "SI Admin",
+    "description": "Admin panel for SineInverse — manage payments, cards, and settings.",
+    "start_url": "/admin",
+    "scope": "/admin",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#7c3aed",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "/logo-static.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "business",
+        "utilities"
+    ],
+    "lang": "en"
+}

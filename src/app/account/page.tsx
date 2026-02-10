@@ -41,6 +41,11 @@ export default function AccountPage() {
     const [loadingCards, setLoadingCards] = useState(false);
     const [analytics, setAnalytics] = useState<Record<string, CardAnalytics>>({});
     const [expandedCard, setExpandedCard] = useState<string | null>(null);
+    const [qrPaymentData, setQrPaymentData] = useState<{
+        qrImageUrl: string;
+        cardId: string;
+        message: string;
+    } | null>(null);
     const { toast } = useToast();
 
     // Load user's cards
@@ -120,6 +125,7 @@ export default function AccountPage() {
     const handleEditCard = (card: CardData) => {
         // Save card data to localStorage so the lab picks it up
         const labDraft = {
+            editingSlug: card.slug, // Pass slug so lab updates instead of creating new
             recipientName: card.recipient_name,
             senderName: card.sender_name,
             cardBlocks: (card.blocks || []).map(b => ({
@@ -149,6 +155,16 @@ export default function AccountPage() {
                 // Payments disabled — card auto-activated
                 toast('Card activated for free! 🎉', 'success');
                 loadCards(); // Refresh
+                return;
+            }
+
+            if (data.mode === 'qr') {
+                // QR mode — show QR popup with card ID
+                setQrPaymentData({
+                    qrImageUrl: data.qrImageUrl,
+                    cardId: data.cardId,
+                    message: data.message,
+                });
                 return;
             }
 
@@ -368,6 +384,44 @@ export default function AccountPage() {
                     )}
                 </div>
             </main>
+
+            {/* QR Payment Modal */}
+            {qrPaymentData && (
+                <div className={styles.qrOverlay} onClick={() => setQrPaymentData(null)}>
+                    <div className={styles.qrModal} onClick={(e) => e.stopPropagation()}>
+                        <button className={styles.qrCloseBtn} onClick={() => setQrPaymentData(null)}>✕</button>
+                        <h2 className={styles.qrTitle}>📱 Pay via QR Code</h2>
+                        <p className={styles.qrInstruction}>
+                            Scan the QR code below to pay, and <strong>include this Card ID in your payment remarks/message</strong>:
+                        </p>
+                        <div className={styles.qrCardId}>
+                            <span className={styles.qrCardIdLabel}>Your Card ID</span>
+                            <code className={styles.qrCardIdValue}>{qrPaymentData.cardId}</code>
+                            <button
+                                className={styles.qrCopyBtn}
+                                onClick={() => {
+                                    navigator.clipboard.writeText(qrPaymentData.cardId);
+                                    toast('Card ID copied!', 'success');
+                                }}
+                            >
+                                📋 Copy
+                            </button>
+                        </div>
+                        {qrPaymentData.qrImageUrl ? (
+                            <img
+                                src={qrPaymentData.qrImageUrl}
+                                alt="UPI QR Code"
+                                className={styles.qrCodeImage}
+                            />
+                        ) : (
+                            <p className={styles.qrNoImage}>QR code not available. Contact admin.</p>
+                        )}
+                        <p className={styles.qrNote}>
+                            After payment, the admin will verify and activate your card within a few minutes.
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

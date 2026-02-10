@@ -28,18 +28,18 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Card ID required' }, { status: 400 });
         }
 
-        // 2. Check if payments are enabled
+        // 2. Check payment mode
         const supabase = createAdminClient();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: settings } = await (supabase as any)
+        const { data: modeData } = await (supabase as any)
             .from('app_settings')
             .select('value')
-            .eq('key', 'payments_enabled')
+            .eq('key', 'payment_mode')
             .single();
 
-        const paymentsEnabled = settings?.value !== 'false';
+        const paymentMode = modeData?.value || 'disabled';
 
-        if (!paymentsEnabled) {
+        if (paymentMode === 'disabled') {
             // Payments disabled — auto-mark as paid
             const now = new Date();
             const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -60,6 +60,28 @@ export async function POST(request: NextRequest) {
                 success: true,
                 free: true,
                 message: 'Card activated for free (payments disabled)',
+            });
+        }
+
+        if (paymentMode === 'qr') {
+            // QR mode — return QR image + card ID for user to include in payment remarks
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { data: qrData } = await (supabase as any)
+                .from('app_settings')
+                .select('value')
+                .eq('key', 'qr_image_url')
+                .single();
+
+            const qrImageUrl = qrData?.value || '';
+            const shortCardId = cardId.slice(0, 8).toUpperCase();
+
+            return NextResponse.json({
+                success: true,
+                mode: 'qr',
+                qrImageUrl,
+                cardId: shortCardId,
+                fullCardId: cardId,
+                message: `Pay via QR and include "${shortCardId}" in your payment remarks/message`,
             });
         }
 

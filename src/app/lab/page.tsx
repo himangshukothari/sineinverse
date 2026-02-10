@@ -33,6 +33,7 @@ const LAB_STORAGE_KEY = 'sineinverse_lab_draft';
 interface LabDraft {
     recipientName: string;
     senderName: string;
+    editingSlug?: string; // Present when editing an existing card
     cardBlocks: Array<{ blockType: string; name: string; emoji: string; configured: boolean; inputData: Record<string, unknown> }>;
     pendingSave?: boolean;
 }
@@ -67,6 +68,7 @@ export default function LabPage() {
 
     const [recipientName, setRecipientName] = useState(draft?.recipientName || '');
     const [senderName, setSenderName] = useState(draft?.senderName || '');
+    const [editingSlug, setEditingSlug] = useState<string | null>(draft?.editingSlug || null);
     const [cardBlocks, setCardBlocks] = useState<CardBlock[]>(
         draft?.cardBlocks?.map((b) => ({ ...b, id: `${b.blockType}-${Date.now()}-${Math.random()}`, schema: undefined })) || []
     );
@@ -231,20 +233,26 @@ export default function LabPage() {
 
         setIsSaving(true);
         try {
-            const response = await fetch('/api/cards', {
-                method: 'POST',
+            const payload = {
+                title: `Card for ${recipientName}`,
+                recipientName: recipientName.trim(),
+                senderName: senderName.trim() || session.user.name || '',
+                blocks: cardBlocks.map((b, i) => ({ blockId: b.blockType, order: i, input: b.inputData }))
+            };
+
+            // If editing, use PUT to update existing card; otherwise POST to create new
+            const url = editingSlug ? `/api/cards/${editingSlug}` : '/api/cards';
+            const method = editingSlug ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: `Card for ${recipientName}`,
-                    recipientName: recipientName.trim(),
-                    senderName: senderName.trim() || session.user.name || '',
-                    blocks: cardBlocks.map((b, i) => ({ blockId: b.blockType, order: i, input: b.inputData }))
-                }),
+                body: JSON.stringify(payload),
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || 'Failed to save');
             clearDraft();
-            toast('Card saved! Redirecting...', 'success');
+            toast(editingSlug ? 'Card updated! Redirecting...' : 'Card saved! Redirecting...', 'success');
             setTimeout(() => { window.location.href = '/account'; }, 1500);
         } catch (error) {
             console.error('Failed to save:', error);
@@ -361,7 +369,7 @@ export default function LabPage() {
                         ▶ Preview
                     </button>
                     <button className={styles.saveBtn} disabled={cardBlocks.length === 0 || isSaving} onClick={handleSave}>
-                        {isSaving ? 'Saving...' : '💾 Save'}
+                        {isSaving ? 'Saving...' : editingSlug ? '✏️ Update' : '💾 Save'}
                     </button>
                 </div>
             </header>

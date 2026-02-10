@@ -27,16 +27,16 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         // Check if payments are enabled
         const supabase = createAdminClient();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: settings } = await (supabase as any)
+        const { data: modeData } = await (supabase as any)
             .from('app_settings')
             .select('value')
-            .eq('key', 'payments_enabled')
+            .eq('key', 'payment_mode')
             .single();
 
-        const paymentsEnabled = settings?.value !== 'false';
+        const paymentMode = modeData?.value || 'disabled';
 
-        // If payments are enabled, check if card is paid
-        if (paymentsEnabled && card.status !== 'paid') {
+        // If payments are enabled (qr or phonepe), check if card is paid
+        if (paymentMode !== 'disabled' && card.status !== 'paid') {
             return NextResponse.json(
                 { error: 'This card is not available yet', code: 'UNPAID' },
                 { status: 403 }

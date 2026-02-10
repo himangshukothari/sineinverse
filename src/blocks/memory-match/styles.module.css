@@ -63,7 +63,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.75rem;
-    max-width: 600px;
+    max-width: 500px;
     width: 100%;
     padding: 0 0.5rem;
 }
@@ -72,6 +72,35 @@
     .grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 0.5rem;
+        max-width: 100%;
+        padding: 0 0.25rem;
+    }
+
+    .container {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.875rem;
+    }
+
+    .stats {
+        gap: 2rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .grid {
+        gap: 0.375rem;
+    }
+
+    .title {
+        font-size: 1.25rem;
     }
 }
 

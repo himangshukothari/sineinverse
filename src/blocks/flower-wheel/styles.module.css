@@ -9,7 +9,7 @@
     justify-content: center;
     padding: 2rem 1rem;
     background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%);
-    overflow: hidden;
+    overflow: visible;
     font-family: 'Georgia', serif;
     color: #881337;
 }
@@ -414,24 +414,62 @@
 /* ============ RESPONSIVE ============ */
 @media (max-width: 480px) {
     .container {
-        padding: 1rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .header {
+        margin-bottom: 1rem;
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .subtitle {
-        font-size: 1rem;
+        font-size: 0.875rem;
+    }
+
+    .wheelWrapper {
+        padding: 1rem 0;
     }
 
     .wheelContainer {
-        width: 300px;
-        height: 300px;
+        width: min(85vw, 300px);
+        height: min(85vw, 300px);
     }
 
     .spinButton {
-        padding: 0.875rem 2rem;
-        font-size: 1rem;
+        padding: 0.75rem 1.75rem;
+        font-size: 0.9375rem;
+        margin-top: 1rem;
+    }
+
+    .roseOuter {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .roseInner {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+
+    .modal {
+        padding: 1.5rem 1rem;
+    }
+
+    .modalTitle {
+        font-size: 1.35rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .wheelContainer {
+        width: min(80vw, 260px);
+        height: min(80vw, 260px);
+    }
+
+    .title {
+        font-size: 1.5rem;
     }
 }

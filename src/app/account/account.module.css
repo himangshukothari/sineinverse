@@ -578,3 +578,120 @@
         font-size: 1.25rem;
     }
 }
+
+/* ── QR Payment Modal ────────────────────── */
+.qrOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.qrModal {
+    background: linear-gradient(135deg, #1e1b4b, #1e293b);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 420px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+.qrCloseBtn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #94a3b8;
+    font-size: 1.25rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qrTitle {
+    font-size: 1.5rem;
+    color: #e2e8f0;
+    margin-bottom: 0.75rem;
+}
+
+.qrInstruction {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.qrInstruction strong {
+    color: #fbbf24;
+}
+
+.qrCardId {
+    background: rgba(251, 191, 36, 0.1);
+    border: 2px dashed rgba(251, 191, 36, 0.4);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qrCardIdLabel {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.qrCardIdValue {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fbbf24;
+    letter-spacing: 3px;
+    font-family: monospace;
+}
+
+.qrCopyBtn {
+    background: rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.qrCodeImage {
+    max-width: 280px;
+    width: 100%;
+    border-radius: 12px;
+    border: 2px solid #334155;
+    margin-bottom: 1rem;
+}
+
+.qrNoImage {
+    color: #f87171;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.qrNote {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.5;
+}
