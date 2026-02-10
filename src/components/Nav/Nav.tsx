@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import styles from './Nav.module.css';
 
 // Navigation links config
@@ -24,7 +24,6 @@ export function Nav() {
     // Get active page ID from pathname
     const getActiveId = () => {
         if (pathname === '/') return 'home';
-        // Match first path segment
         const segment = pathname.split('/')[1];
         return segment || 'home';
     };
@@ -48,61 +47,43 @@ export function Nav() {
         };
     }, [menuOpen]);
 
-    // Close menu when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            if (menuOpen && !target.closest(`.${styles.nav}`)) {
-                setMenuOpen(false);
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, [menuOpen]);
-
     const handleSignIn = () => {
         signIn('google');
     };
 
-    const handleSignOut = () => {
-        signOut();
-    };
-
     return (
-        <nav className={styles.nav}>
-            <div className={styles.container}>
-                {/* LOGO */}
-                <Link href="/" className={styles.logo}>
-                    <img
-                        src="/logo.gif"
-                        alt="Sine Inverse"
-                        width="32"
-                        height="32"
-                        className={styles.logoImage}
-                    />
-                    <span>Sine Inverse</span>
-                </Link>
+        <>
+            {/* NAV BAR */}
+            <nav className={styles.nav}>
+                <div className={styles.container}>
+                    {/* LOGO */}
+                    <Link href="/" className={styles.logo}>
+                        <img
+                            src="/logo.gif"
+                            alt="Sine Inverse"
+                            width="32"
+                            height="32"
+                            className={styles.logoImage}
+                        />
+                        <span>Sine Inverse</span>
+                    </Link>
 
-                {/* NAV LINKS */}
-                <div className={`${styles.navLinks} ${menuOpen ? styles.active : ''}`}>
-                    {NAV_LINKS.map((link) => (
-                        <Link
-                            key={link.id}
-                            href={link.href}
-                            className={`${styles.navLink} ${activeId === link.id ? styles.activeLink : ''}`}
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
+                    {/* DESKTOP NAV LINKS */}
+                    <div className={styles.desktopLinks}>
+                        {NAV_LINKS.map((link) => (
+                            <Link
+                                key={link.id}
+                                href={link.href}
+                                className={`${styles.navLink} ${activeId === link.id ? styles.activeLink : ''}`}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
 
-                    {/* AUTH SECTION */}
-                    {status === 'loading' ? (
-                        <div className={styles.authLoading}>...</div>
-                    ) : session?.user ? (
-                        /* Logged In - Show Avatar */
-                        <div className={styles.userMenu}>
+                        {/* AUTH SECTION */}
+                        {status === 'loading' ? (
+                            <div className={styles.authLoading}>...</div>
+                        ) : session?.user ? (
                             <Link href="/account" className={styles.userAvatar}>
                                 {session.user.image ? (
                                     <img
@@ -115,47 +96,96 @@ export function Nav() {
                                     <span>{session.user.name?.[0] || '👤'}</span>
                                 )}
                             </Link>
-                        </div>
-                    ) : (
-                        /* Not Logged In - Show Sign In */
-                        <button
-                            className={styles.signInBtn}
-                            onClick={handleSignIn}
-                        >
-                            Sign In
-                        </button>
-                    )}
+                        ) : (
+                            <button className={styles.signInBtn} onClick={handleSignIn}>
+                                Sign In
+                            </button>
+                        )}
 
-                    {/* CTA BUTTON */}
+                        {/* CTA BUTTON */}
+                        <Link href="/lab" className={styles.ctaBtn}>
+                            Start Creating
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </Link>
+                    </div>
+
+                    {/* HAMBURGER MENU (Mobile) */}
+                    <button
+                        className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setMenuOpen(!menuOpen);
+                        }}
+                        aria-label="Toggle menu"
+                    >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </nav>
+
+            {/* MOBILE OVERLAY — rendered OUTSIDE nav to avoid backdrop-filter containing block */}
+            {menuOpen && (
+                <div className={styles.overlay} onClick={() => setMenuOpen(false)} />
+            )}
+
+            {/* MOBILE DRAWER — rendered OUTSIDE nav so position:fixed works correctly */}
+            <div className={`${styles.mobileDrawer} ${menuOpen ? styles.drawerOpen : ''}`}>
+                {NAV_LINKS.map((link) => (
                     <Link
-                        href="/lab"
-                        className={styles.ctaBtn}
+                        key={link.id}
+                        href={link.href}
+                        className={`${styles.drawerLink} ${activeId === link.id ? styles.drawerActive : ''}`}
                         onClick={() => setMenuOpen(false)}
                     >
-                        Start Creating
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        {link.name}
                     </Link>
-                </div>
+                ))}
 
-                {/* HAMBURGER MENU (Mobile) */}
-                <button
-                    className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setMenuOpen(!menuOpen);
-                    }}
-                    aria-label="Toggle menu"
+                {/* AUTH SECTION */}
+                {status === 'loading' ? (
+                    <div className={styles.authLoading}>...</div>
+                ) : session?.user ? (
+                    <Link
+                        href="/account"
+                        className={styles.drawerUser}
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        {session.user.image ? (
+                            <img
+                                src={session.user.image}
+                                alt={session.user.name || 'User'}
+                                width="36"
+                                height="36"
+                            />
+                        ) : (
+                            <span className={styles.drawerUserInitial}>
+                                {session.user.name?.[0] || '👤'}
+                            </span>
+                        )}
+                        <span>{session.user.name || 'Account'}</span>
+                    </Link>
+                ) : (
+                    <button className={styles.drawerSignIn} onClick={handleSignIn}>
+                        Sign In
+                    </button>
+                )}
+
+                {/* CTA BUTTON */}
+                <Link
+                    href="/lab"
+                    className={styles.drawerCta}
+                    onClick={() => setMenuOpen(false)}
                 >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                    Start Creating
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </Link>
             </div>
-
-            {/* OVERLAY */}
-            {menuOpen && <div className={styles.overlay} onClick={() => setMenuOpen(false)} />}
-        </nav>
+        </>
     );
 }

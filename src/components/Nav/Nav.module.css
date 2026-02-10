@@ -30,16 +30,16 @@
     z-index: 1001;
 }
 
-.logo svg {
-    transition: transform 0.2s;
+.logoImage {
+    border-radius: 6px;
 }
 
-.logo:hover svg {
+.logo:hover .logoImage {
     transform: scale(1.1);
 }
 
-/* ============ NAV LINKS ============ */
-.navLinks {
+/* ============ DESKTOP NAV LINKS ============ */
+.desktopLinks {
     display: flex;
     align-items: center;
     gap: 2rem;
@@ -105,7 +105,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1101;
     padding: 4px;
 }
 
@@ -131,71 +131,14 @@
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ============ OVERLAY ============ */
+/* ============ OVERLAY (outside nav, so position:fixed works) ============ */
 .overlay {
     display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 999;
 }
 
-/* ============ MOBILE STYLES ============ */
-@media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
-
-    .navLinks {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 280px;
-        height: 100vh;
-        background: #e8dff5;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-        padding: 6rem 1.5rem 2rem;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        z-index: 1000;
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .navLinks.active {
-        transform: translateX(0);
-    }
-
-    .navLink {
-        width: 100%;
-        padding: 1rem 0;
-        font-size: 1.125rem;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .navLink::after {
-        display: none;
-    }
-
-    .activeLink {
-        color: #7c3aed;
-        background: rgba(124, 58, 237, 0.1);
-        margin: 0 -1.5rem;
-        padding: 1rem 1.5rem;
-        border-radius: 0;
-    }
-
-    .ctaBtn {
-        margin-top: 1.5rem;
-        width: 100%;
-        justify-content: center;
-        padding: 1rem;
-    }
-
-    .overlay {
-        display: block;
-    }
+/* ============ MOBILE DRAWER (outside nav) ============ */
+.mobileDrawer {
+    display: none;
 }
 
 /* ============ AUTH STYLES ============ */
@@ -219,10 +162,6 @@
 .signInBtn:hover {
     background: var(--violet-50);
     border-color: var(--violet-500);
-}
-
-.userMenu {
-    position: relative;
 }
 
 .userAvatar {
@@ -252,15 +191,158 @@
     object-fit: cover;
 }
 
+/* ============ MOBILE STYLES ============ */
 @media (max-width: 768px) {
-    .signInBtn {
-        width: 100%;
-        padding: 0.875rem;
-        margin-top: 1rem;
+    .hamburger {
+        display: flex;
     }
 
-    .userAvatar {
-        width: 40px;
-        height: 40px;
+    /* Hide desktop links on mobile */
+    .desktopLinks {
+        display: none;
+    }
+
+    /* OVERLAY — full screen backdrop */
+    .overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1050;
+        animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* MOBILE DRAWER */
+    .mobileDrawer {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100dvh;
+        background: linear-gradient(180deg, #e8dff5 0%, #f3eefa 100%);
+        padding: 5rem 1.5rem 2rem;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1100;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+        overflow-y: auto;
+        gap: 0.25rem;
+    }
+
+    .drawerOpen {
+        transform: translateX(0);
+    }
+
+    /* Drawer links */
+    .drawerLink {
+        display: block;
+        padding: 0.875rem 1rem;
+        color: #4c1d95;
+        text-decoration: none;
+        font-size: 1.125rem;
+        font-weight: 500;
+        border-radius: 12px;
+        transition: all 0.2s;
+    }
+
+    .drawerLink:hover {
+        background: rgba(124, 58, 237, 0.08);
+    }
+
+    .drawerActive {
+        color: var(--violet-700);
+        background: rgba(124, 58, 237, 0.12);
+        font-weight: 600;
+    }
+
+    /* Drawer user link */
+    .drawerUser {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        margin-top: 0.5rem;
+        color: #4c1d95;
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 12px;
+        transition: background 0.2s;
+    }
+
+    .drawerUser:hover {
+        background: rgba(124, 58, 237, 0.08);
+    }
+
+    .drawerUser img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .drawerUserInitial {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--violet-200);
+        color: var(--violet-700);
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    /* Drawer sign in */
+    .drawerSignIn {
+        width: 100%;
+        padding: 0.875rem;
+        margin-top: 0.5rem;
+        background: transparent;
+        border: 2px solid var(--violet-300);
+        color: var(--violet-600);
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .drawerSignIn:hover {
+        background: var(--violet-50);
+        border-color: var(--violet-500);
+    }
+
+    /* Drawer CTA */
+    .drawerCta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
+        background: var(--violet-500);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background 0.2s;
+    }
+
+    .drawerCta:hover {
+        background: var(--violet-600);
     }
 }
