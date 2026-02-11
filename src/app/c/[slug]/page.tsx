@@ -232,15 +232,6 @@ export default function CardViewPage() {
             ) : (
                 /* ===== Playing Blocks ===== */
                 <div className={styles.player}>
-                    <div className={styles.progress}>
-                        {sortedBlocks.map((_, i) => (
-                            <div
-                                key={i}
-                                className={`${styles.progressDot} ${i < currentBlockIndex ? styles.done : ''} ${i === currentBlockIndex ? styles.active : ''}`}
-                            />
-                        ))}
-                    </div>
-
                     <div className={styles.blockContainer}>
                         {currentBlock && (
                             <BlockRenderer
