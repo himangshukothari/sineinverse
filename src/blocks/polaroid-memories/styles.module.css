@@ -1,7 +1,8 @@
 /* ============ POLAROID MEMORIES BLOCK ============ */
 
 .container {
-    min-height: 100%;
+    height: 100dvh;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
