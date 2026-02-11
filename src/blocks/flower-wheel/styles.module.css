@@ -17,7 +17,7 @@
    ══════════════════════════════════════ */
 .container {
     position: relative;
-    min-height: 100dvh;
+    min-height: 100%;
     background: #f8d4d4;
     background: linear-gradient(180deg, #fce4ec 0%, #f8d4d4 50%, #fce4ec 100%);
     display: flex;

@@ -188,9 +188,10 @@
 
 /* ============ PLAYER ============ */
 .player {
-    flex: 1;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .progress {
@@ -223,8 +224,7 @@
 .blockContainer {
     flex: 1;
     position: relative;
-    min-height: 500px;
-    overflow: visible;
+    overflow: hidden;
 }
 
 /* ============ COMPLETION SCREEN ============ */
