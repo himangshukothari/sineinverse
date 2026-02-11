@@ -424,8 +424,30 @@ export default function AccountPage() {
                                 href={qrPaymentData.upiLink}
                                 className={styles.upiPayBtn}
                             >
-                                💳 Pay ₹{qrPaymentData.amount} via UPI
+                                💳 Pay ₹{qrPaymentData.amount} via UPI App
                             </a>
+                        )}
+
+                        {/* UPI ID Display */}
+                        {qrPaymentData.upiId && (
+                            <div className={styles.upiIdSection}>
+                                <span className={styles.upiIdLabel}>UPI ID</span>
+                                <div className={styles.upiIdRow}>
+                                    <code className={styles.upiIdValue}>{qrPaymentData.upiId}</code>
+                                    <button
+                                        className={styles.qrCopyBtn}
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(qrPaymentData.upiId || '');
+                                            toast('UPI ID copied!', 'success');
+                                        }}
+                                    >
+                                        📋 Copy
+                                    </button>
+                                </div>
+                                <span className={styles.upiIdHint}>
+                                    You can also manually enter this UPI ID in any payment app
+                                </span>
+                            </div>
                         )}
 
                         {qrPaymentData.qrImageUrl ? (
