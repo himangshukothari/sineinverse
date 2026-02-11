@@ -18,7 +18,12 @@ interface AdminCard {
 type PaymentMode = 'disabled' | 'qr' | 'phonepe';
 
 export default function AdminPage() {
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return sessionStorage.getItem('admin_password') || '';
+        }
+        return '';
+    });
     const [authenticated, setAuthenticated] = useState(false);
     const [paymentMode, setPaymentMode] = useState<PaymentMode>('disabled');
     const [qrImageUrl, setQrImageUrl] = useState('');
@@ -48,6 +53,7 @@ export default function AdminPage() {
             if (!res.ok) throw new Error('Unauthorized');
             const data = await res.json();
             setAuthenticated(true);
+            sessionStorage.setItem('admin_password', password);
             setPaymentMode(data.paymentMode || 'disabled');
             setQrImageUrl(data.qrImageUrl || '');
             setQrInput(data.qrImageUrl || '');
@@ -56,11 +62,19 @@ export default function AdminPage() {
             setContactEmail(data.contactEmail || '');
             setCards(data.cards || []);
         } catch {
+            sessionStorage.removeItem('admin_password');
             showToast('❌ Invalid password');
         } finally {
             setLoading(false);
         }
     };
+
+    // Auto-login on mount if password is saved in sessionStorage
+    useEffect(() => {
+        if (password && !authenticated) {
+            loadData();
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
