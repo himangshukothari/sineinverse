@@ -119,7 +119,7 @@ export default function BlockRenderer({
     // Render error state
     if (error || !blockModule) {
         // Check if it's a known "coming soon" block
-        const comingSoonBlocks = ['intro-envelope', 'wax-seal-reveal', 'finale-ask'];
+        const comingSoonBlocks = ['intro-envelope'];
         if (comingSoonBlocks.includes(blockId)) {
             return (
                 <div className={`${styles.wrapper} ${className}`} style={{ transform: `scale(${scale})` }}>

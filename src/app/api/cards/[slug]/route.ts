@@ -51,7 +51,19 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             );
         }
 
-        return NextResponse.json({ card });
+        // Get contact email for card footer
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: emailData } = await (supabase as any)
+            .from('app_settings')
+            .select('value')
+            .eq('key', 'contact_email')
+            .single();
+
+        const contactEmail = emailData?.value || '';
+
+        return NextResponse.json({
+            card: { ...card, contact_email: contactEmail },
+        });
     } catch (error) {
         console.error('Get card API error:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

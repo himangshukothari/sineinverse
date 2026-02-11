@@ -1,13 +1,14 @@
 /**
- * FLOWER WHEEL BLOCK - React Component
- * 
- * A spinning flower petal wheel game. Spin to reveal a surprise message!
- * Adapted from valentine-flower-wheel gameblock.
+ * FLOWER WHEEL BLOCK — pixel-perfect match to reference images.
+ *
+ * Watercolor CSS hearts, cursive title, 8-segment pie wheel with
+ * properly-oriented text + emojis, notch pointer, trapezoid stand,
+ * coral TAP TO SPIN button, candy-stripe progress bar.
  */
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import type { BlockProps } from '@/types/blocks';
 import type { FlowerWheelInput, FlowerWheelOutput } from './schema';
 import styles from './styles.module.css';
@@ -15,7 +16,10 @@ import styles from './styles.module.css';
 interface PetalData {
     text: string;
     message: string;
+    emoji: string;
 }
+
+const DEFAULT_EMOJIS = ['🍽️', '🎬', '🌃', '🍗', '🎮', '🧺', '💆', '🍰'];
 
 export default function FlowerWheelBlock({
     input = {} as FlowerWheelInput,
@@ -24,286 +28,282 @@ export default function FlowerWheelBlock({
 }: BlockProps<FlowerWheelInput, FlowerWheelOutput>) {
     const [isSpinning, setIsSpinning] = useState(false);
     const [rotation, setRotation] = useState(0);
-    const [selectedPetalIndex, setSelectedPetalIndex] = useState<number | null>(null);
+    const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
     const [showModal, setShowModal] = useState(false);
+    const [progress, setProgress] = useState(0);
 
-    // Build petals array from input
     const petals = useMemo(() => {
         const result: PetalData[] = [];
-
-        // Add petals that have text defined
-        const petalKeys = [1, 2, 3, 4, 5, 6, 7, 8] as const;
-        for (const n of petalKeys) {
+        for (let n = 1; n <= 8; n++) {
             const text = input?.[`petal${n}Text` as keyof FlowerWheelInput] as string | undefined;
-            const message = input?.[`petal${n}Message` as keyof FlowerWheelInput] as string | undefined;
-            if (text && text.trim()) {
+            const msg = input?.[`petal${n}Message` as keyof FlowerWheelInput] as string | undefined;
+            if (text?.trim()) {
                 result.push({
                     text: text.trim(),
-                    message: message?.trim() || 'A special surprise awaits!',
+                    message: msg?.trim() || 'A special surprise awaits!',
+                    emoji: DEFAULT_EMOJIS[n - 1] || '🎁',
                 });
             }
         }
-
-        // Default petals if none provided
         if (result.length === 0) {
             return [
-                { text: 'Dinner Date', message: 'A romantic candlelight dinner tonight!' },
-                { text: 'Massage', message: 'A relaxing 30-minute massage.' },
-                { text: 'Movie Night', message: 'You pick the movie, I bring the popcorn.' },
-                { text: 'Breakfast in Bed', message: 'Sleep in, I\'ll handle breakfast.' },
+                { text: 'Dinner Date', message: 'A romantic candlelight dinner tonight!', emoji: '🍽️' },
+                { text: 'Movie Night', message: 'You pick the movie, I bring the popcorn.', emoji: '🎬' },
+                { text: 'Stargazing', message: 'A quiet night under the stars together.', emoji: '🌃' },
+                { text: 'Home Cooked\nMeal', message: "I'll cook your favorite dish!", emoji: '🍗' },
+                { text: 'Game Night', message: 'Board games, card games — you name it!', emoji: '🎮' },
+                { text: 'Picnic', message: 'A beautiful picnic in the park.', emoji: '🧺' },
+                { text: 'Massage', message: 'A relaxing massage, just for you.', emoji: '💆' },
+                { text: 'Dessert', message: "We're going out for something sweet!", emoji: '🍰' },
             ];
         }
-
         return result;
     }, [input]);
 
-    const numPetals = petals.length;
-    const anglePerPetal = 360 / numPetals;
+    const n = petals.length;
+    const slice = 360 / n;
+    const title = input?.title || "Happy Valentine's Day,\nMy Love!";
+    const subtitle = input?.subtitle || "SPIN FOR YOUR VALENTINE'S SURPRISE";
+    const acceptBtn = input?.acceptButtonText || 'Accept with Love 💕';
 
-    const title = input?.title || "Valentine's Surprise";
-    const subtitle = input?.subtitle || 'Spin the flower to reveal your gift';
-    const buttonText = input?.buttonText || 'Pick a Petal';
-    const acceptButtonText = input?.acceptButtonText || 'Accept with Love';
-
-    // Spin logic
-    const handleSpin = () => {
+    /* ─── spin ─── */
+    const handleSpin = useCallback(() => {
         if (isSpinning) return;
         setIsSpinning(true);
-        setSelectedPetalIndex(null);
+        setSelectedIdx(null);
+        setProgress(0);
 
-        const randomOffset = Math.floor(Math.random() * 360);
-        const extraSpins = 360 * 8;
-        const targetRotation = rotation + extraSpins + randomOffset;
+        const offset = Math.random() * 360;
+        const target = rotation + 360 * 7 + offset;
+        setRotation(target);
 
-        setRotation(targetRotation);
+        const dur = 4500;
+        const t0 = Date.now();
+        const tick = () => {
+            const p = Math.min((Date.now() - t0) / dur, 1);
+            setProgress(p * 100);
+            if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
 
-        // Determine winner
-        const finalAngle = targetRotation % 360;
-        const angleFromTop = (360 - finalAngle) % 360;
-        const winningIndex = Math.floor(angleFromTop / anglePerPetal);
+        // pointer is at top (270° in standard math coords → 12 o'clock)
+        const final360 = target % 360;
+        const fromTop = (360 - final360 + 270) % 360;
+        const winner = Math.floor(fromTop / slice) % n;
 
         setTimeout(() => {
             setIsSpinning(false);
-            setSelectedPetalIndex(winningIndex);
+            setSelectedIdx(winner);
             setShowModal(true);
-        }, 4500);
-    };
+        }, dur);
+    }, [isSpinning, rotation, slice, n]);
 
     const closeModal = () => {
         setShowModal(false);
-
-        if (selectedPetalIndex !== null) {
-            const winner = petals[selectedPetalIndex];
+        if (selectedIdx !== null) {
+            const w = petals[selectedIdx];
             onComplete({
-                selectedPetal: winner.text,
-                selectedMessage: winner.message,
+                selectedPetal: w.text.replace('\n', ' '),
+                selectedMessage: w.message,
                 playedAt: new Date().toISOString(),
             });
         }
     };
 
-    // Generate petal path
-    const radius = 200;
-    const getPetalPath = () => {
-        const angleRad = (anglePerPetal * Math.PI) / 180;
-        const halfAngle = angleRad / 2;
-        const paddingAngle = 2 * (Math.PI / 180);
-        const effectiveHalfAngle = Math.max(halfAngle - paddingAngle, halfAngle * 0.8);
+    /* ─── SVG segments ─── */
+    const cx = 200, cy = 200, r = 178;
+    const segments = petals.map((p, i) => {
+        const a0 = (i * slice - 90) * (Math.PI / 180);
+        const a1 = ((i + 1) * slice - 90) * (Math.PI / 180);
+        const mid = ((i + 0.5) * slice - 90) * (Math.PI / 180);
+        const midDeg = (i + 0.5) * slice - 90;
 
-        const r1 = radius * 0.3;
-        const r2 = radius * 0.75;
-        const rTip = radius;
+        const x0 = cx + r * Math.cos(a0);
+        const y0 = cy + r * Math.sin(a0);
+        const x1 = cx + r * Math.cos(a1);
+        const y1 = cy + r * Math.sin(a1);
+        const lg = slice > 180 ? 1 : 0;
+        const d = `M${cx},${cy} L${x0},${y0} A${r},${r} 0 ${lg} 1 ${x1},${y1} Z`;
 
-        const w1 = r1 * Math.tan(effectiveHalfAngle * 0.6);
-        const w2 = r2 * Math.tan(effectiveHalfAngle);
+        // emoji at ~72% radius from center
+        const eR = r * 0.72;
+        const eX = cx + eR * Math.cos(mid);
+        const eY = cy + eR * Math.sin(mid);
 
-        return `
-            M 0 0
-            Q ${r1 * 0.5} ${w1 * 0.2} ${r1} ${w1}
-            T ${r2} ${w2}
-            Q ${radius * 0.9} ${w2 * 0.8} ${rTip} 0
-            Q ${radius * 0.9} ${-w2 * 0.8} ${r2} ${-w2}
-            T ${r1} ${-w1}
-            Q ${r1 * 0.5} ${-w1 * 0.2} 0 0
-            Z
-        `;
-    };
+        // text at ~46% radius
+        const tR = r * 0.46;
+        const tX = cx + tR * Math.cos(mid);
+        const tY = cy + tR * Math.sin(mid);
 
-    const selectedPetal = selectedPetalIndex !== null ? petals[selectedPetalIndex] : null;
+        // flip text in bottom half so it's always readable
+        const normDeg = ((midDeg % 360) + 360) % 360;
+        const flip = normDeg > 0 && normDeg < 180;
+        const textRot = flip ? midDeg + 180 : midDeg;
+
+        // alternating colors matching reference
+        const fills = ['#f9c8c8', '#f8b0b0', '#f9c8c8', '#f8b0b0', '#f9c8c8', '#f8b0b0', '#f9c8c8', '#f8b0b0'];
+
+        // multi-line text support
+        const lines = p.text.split('\n');
+
+        return (
+            <g key={i}>
+                <path d={d} fill={fills[i % fills.length]} stroke="#d98a8a" strokeWidth="1" />
+                {/* Divider line from center outward */}
+                <line
+                    x1={cx} y1={cy}
+                    x2={cx + r * Math.cos(a0)} y2={cy + r * Math.sin(a0)}
+                    stroke="#d98a8a" strokeWidth="1.5"
+                />
+                {/* Emoji */}
+                <text
+                    x={eX} y={eY}
+                    textAnchor="middle" dominantBaseline="central"
+                    fontSize="26"
+                    transform={`rotate(${midDeg}, ${eX}, ${eY})`}
+                >
+                    {p.emoji}
+                </text>
+                {/* Label — rotated to read center-outward, flipped if in bottom half */}
+                {lines.map((line, li) => (
+                    <text
+                        key={li}
+                        x={tX} y={tY + (li - (lines.length - 1) / 2) * 12}
+                        textAnchor="middle" dominantBaseline="central"
+                        fontSize="10" fontWeight="700" fill="#5a2030"
+                        fontFamily="sans-serif"
+                        transform={`rotate(${textRot}, ${tX}, ${tY})`}
+                    >
+                        {line}
+                    </text>
+                ))}
+            </g>
+        );
+    });
+
+    /* ─── painted hearts (CSS, not emoji) ─── */
+    const hearts = useMemo(() =>
+        Array.from({ length: 20 }).map((_, i) => ({
+            id: i,
+            x: 3 + Math.random() * 94,
+            y: 3 + Math.random() * 94,
+            size: 12 + Math.random() * 36,
+            delay: Math.random() * 6,
+            dur: 4 + Math.random() * 5,
+            opacity: 0.12 + Math.random() * 0.3,
+            rot: -30 + Math.random() * 60,
+            hue: Math.random() > 0.5 ? 0 : 1, // 0=red, 1=pink
+        }))
+        , []);
+
+    const selected = selectedIdx !== null ? petals[selectedIdx] : null;
 
     return (
         <div className={styles.container} data-mode={mode}>
-            {/* Ambient particles */}
-            <div className={styles.particles}>
-                {Array.from({ length: 15 }).map((_, i) => (
+            {/* ─── Floating CSS Hearts ─── */}
+            <div className={styles.heartsLayer}>
+                {hearts.map(h => (
                     <div
-                        key={i}
-                        className={styles.particle}
+                        key={h.id}
+                        className={`${styles.heart} ${h.hue === 0 ? styles.heartRed : styles.heartPink}`}
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            width: `${Math.random() * 4 + 2}px`,
-                            height: `${Math.random() * 4 + 2}px`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            animationDuration: `${Math.random() * 3 + 3}s`,
+                            left: `${h.x}%`,
+                            top: `${h.y}%`,
+                            width: `${h.size}px`,
+                            height: `${h.size}px`,
+                            opacity: h.opacity,
+                            transform: `rotate(${h.rot}deg)`,
+                            animationDelay: `${h.delay}s`,
+                            animationDuration: `${h.dur}s`,
                         }}
                     />
                 ))}
             </div>
 
-            {/* Header */}
+            {/* ─── Title ─── */}
             <header className={styles.header}>
-                <h1 className={styles.title}>{title}</h1>
-                <p className={styles.subtitle}>{subtitle}</p>
+                <h1 className={styles.title}>
+                    {title.split('\n').map((l, i) => <span key={i}>{l}<br /></span>)}
+                </h1>
             </header>
 
-            {/* Wheel Container */}
-            <div className={styles.wheelWrapper}>
-                {/* Pointer */}
+            {/* ─── Curved Subtitle ─── */}
+            <div className={styles.subtitleWrap}>
+                <svg viewBox="0 0 320 55" className={styles.subtitleSvg}>
+                    <defs>
+                        <path id="arc" d="M 20 48 Q 160 -8 300 48" fill="none" />
+                    </defs>
+                    <text className={styles.subtitleText}>
+                        <textPath href="#arc" startOffset="50%" textAnchor="middle">
+                            {subtitle}
+                        </textPath>
+                    </text>
+                </svg>
+            </div>
+
+            {/* ─── Wheel Assembly ─── */}
+            <div className={styles.wheelAssembly}>
+                {/* Pointer notch */}
                 <div className={styles.pointer}>
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="#fbbf24">
-                        <path d="M12 2L13 7C13 7 16 8 16 11C16 11 13 12 12 15C11 12 8 11 8 11C8 8 11 7 12 2Z" />
-                        <path d="M12 15L11 18C11 18 9 19 9 21C9 21 11 22 12 20C13 22 15 21 15 21C15 19 13 18 12 15Z" opacity="0.8" />
+                    <svg width="28" height="22" viewBox="0 0 28 22">
+                        <path d="M14 22 L4 0 L24 0 Z" fill="#c05555" stroke="#a04040" strokeWidth="1" />
                     </svg>
                 </div>
 
-                {/* The Wheel */}
-                <div className={styles.wheelContainer}>
+                {/* Outer ring */}
+                <div className={styles.outerRing}>
                     <div
                         className={styles.wheel}
                         style={{
                             transform: `rotate(${rotation}deg)`,
                             transition: isSpinning
                                 ? 'transform 4.5s cubic-bezier(0.15, 0, 0.15, 1)'
-                                : 'none'
+                                : 'none',
                         }}
                     >
-                        <svg viewBox="-220 -220 440 440" className={styles.wheelSvg}>
-                            <defs>
-                                <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="#fecdd3" />
-                                    <stop offset="100%" stopColor="#e11d48" />
-                                </linearGradient>
-                                <linearGradient id="grad2" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="#fbcfe8" />
-                                    <stop offset="100%" stopColor="#db2777" />
-                                </linearGradient>
-                                <linearGradient id="gradSelected" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="#fcd34d" />
-                                    <stop offset="100%" stopColor="#d97706" />
-                                </linearGradient>
-                            </defs>
-
-                            <g transform="rotate(-90)">
-                                {petals.map((petal, index) => {
-                                    const isWinner = !isSpinning && selectedPetalIndex === index;
-                                    const isEven = index % 2 === 0;
-
-                                    return (
-                                        <g
-                                            key={index}
-                                            transform={`rotate(${index * anglePerPetal})`}
-                                            className={isWinner ? styles.winnerPetal : styles.petal}
-                                        >
-                                            <path
-                                                d={getPetalPath()}
-                                                fill={isWinner ? "url(#gradSelected)" : (isEven ? "url(#grad1)" : "url(#grad2)")}
-                                                stroke="white"
-                                                strokeWidth="2"
-                                            />
-                                            <path
-                                                d={`M 20 0 L ${radius * 0.8} 0`}
-                                                stroke="white"
-                                                strokeWidth="1"
-                                                strokeOpacity="0.4"
-                                                fill="none"
-                                            />
-                                            <text
-                                                x={radius * 0.6}
-                                                y={4}
-                                                fill="white"
-                                                fontSize={numPetals > 6 ? "11" : "13"}
-                                                fontWeight="bold"
-                                                textAnchor="middle"
-                                                dominantBaseline="middle"
-                                                className={styles.petalText}
-                                            >
-                                                {petal.text}
-                                            </text>
-                                        </g>
-                                    );
-                                })}
-                            </g>
+                        <svg viewBox="0 0 400 400" className={styles.svg}>
+                            {segments}
+                            {/* Center hub */}
+                            <circle cx={cx} cy={cy} r="30" fill="#c05555" stroke="#a04040" strokeWidth="2.5" />
+                            {/* Up-arrow in center */}
+                            <polygon points="200,180 208,196 192,196" fill="rgba(255,255,255,0.85)" />
                         </svg>
                     </div>
-
-                    {/* Center Rose */}
-                    <div className={styles.centerRose}>
-                        <div className={styles.roseOuter}>
-                            <div className={styles.roseInner}>
-                                <svg width="40" height="40" viewBox="0 0 100 100" className={styles.roseCore}>
-                                    <g fill="#be123c" opacity="0.9">
-                                        <circle cx="50" cy="50" r="40" opacity="0.2" />
-                                        <path d="M50 20 Q80 20 80 50 Q80 80 50 80 Q20 80 20 50 Q20 20 50 20" />
-                                        <path d="M50 25 Q75 25 75 50 Q75 75 50 75 Q25 75 25 50 Q25 25 50 25" transform="rotate(45 50 50)" fill="#e11d48" />
-                                        <path d="M50 30 Q70 30 70 50 Q70 70 50 70 Q30 70 30 50 Q30 30 50 30" transform="rotate(90 50 50)" fill="#f43f5e" />
-                                        <path d="M50 35 Q65 35 65 50 Q65 65 50 65 Q35 65 35 50 Q35 35 50 35" transform="rotate(135 50 50)" fill="#fb7185" />
-                                    </g>
-                                    <circle cx="50" cy="50" r="8" fill="#fcd34d" />
-                                    <circle cx="45" cy="45" r="2" fill="#fff" fillOpacity="0.8" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
+                {/* Stand (trapezoid column + base) */}
+                <div className={styles.standCol} />
+                <div className={styles.standBase} />
             </div>
 
-            {/* Spin Button */}
+            {/* ─── TAP TO SPIN ─── */}
             <button
                 onClick={handleSpin}
                 disabled={isSpinning}
-                className={`${styles.spinButton} ${isSpinning ? styles.spinning : ''}`}
+                className={`${styles.spinBtn} ${isSpinning ? styles.spinBtnActive : ''}`}
             >
-                {isSpinning ? (
-                    <>
-                        <svg className={styles.spinIcon} viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" />
-                            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                        </svg>
-                        Blooming...
-                    </>
-                ) : (
-                    <>
-                        {buttonText}
-                        <span className={styles.spinEmoji}>🌸</span>
-                    </>
-                )}
+                {isSpinning ? 'SPINNING...' : 'TAP TO SPIN'}
             </button>
 
-            {/* Result Modal */}
-            {showModal && selectedPetal && (
-                <div className={styles.modalOverlay} onClick={closeModal}>
-                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.modalDecor1} />
-                        <div className={styles.modalDecor2} />
+            {/* ─── Progress bar ─── */}
+            <div className={styles.progressTrack}>
+                <div className={styles.progressFill} style={{ width: `${isSpinning ? progress : 0}%` }} />
+            </div>
 
-                        <div className={styles.modalContent}>
-                            <div className={styles.modalIcon}>🌹</div>
-                            <h2 className={styles.modalTitle}>{selectedPetal.text}</h2>
-                            <div className={styles.modalDivider} />
-                            <p className={styles.modalMessage}>{selectedPetal.message}</p>
-
-                            <button onClick={closeModal} className={styles.acceptButton}>
-                                {acceptButtonText}
-                            </button>
-                        </div>
+            {/* ─── Result Modal ─── */}
+            {showModal && selected && (
+                <div className={styles.overlay} onClick={closeModal}>
+                    <div className={styles.modal} onClick={e => e.stopPropagation()}>
+                        <div className={styles.modalEmoji}>{selected.emoji}</div>
+                        <h2 className={styles.modalTitle}>{selected.text.replace('\n', ' ')}</h2>
+                        <div className={styles.modalLine} />
+                        <p className={styles.modalMsg}>{selected.message}</p>
+                        <button onClick={closeModal} className={styles.modalBtn}>{acceptBtn}</button>
                     </div>
                 </div>
             )}
 
-            {mode === 'preview' && (
-                <div className={styles.previewBadge}>Preview Mode</div>
-            )}
+            {mode === 'preview' && <div className={styles.badge}>Preview</div>}
         </div>
     );
 }

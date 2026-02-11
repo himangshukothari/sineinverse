@@ -23,6 +23,9 @@ export default function AdminPage() {
     const [paymentMode, setPaymentMode] = useState<PaymentMode>('disabled');
     const [qrImageUrl, setQrImageUrl] = useState('');
     const [qrInput, setQrInput] = useState('');
+    const [upiId, setUpiId] = useState('');
+    const [paymentAmount, setPaymentAmount] = useState('143');
+    const [contactEmail, setContactEmail] = useState('');
     const [cards, setCards] = useState<AdminCard[]>([]);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -48,6 +51,9 @@ export default function AdminPage() {
             setPaymentMode(data.paymentMode || 'disabled');
             setQrImageUrl(data.qrImageUrl || '');
             setQrInput(data.qrImageUrl || '');
+            setUpiId(data.upiId || '');
+            setPaymentAmount(data.paymentAmount || '143');
+            setContactEmail(data.contactEmail || '');
             setCards(data.cards || []);
         } catch {
             showToast('❌ Invalid password');
@@ -123,6 +129,35 @@ export default function AdminPage() {
         } catch { showToast('❌ Failed to save QR'); }
     };
 
+    const handleSaveUpi = async () => {
+        try {
+            const res = await fetch('/api/admin', {
+                method: 'POST', headers: headers(),
+                body: JSON.stringify({ action: 'set_upi_id', upiId }),
+            });
+            if (res.ok) showToast('✅ UPI ID saved');
+        } catch { showToast('❌ Failed'); }
+    };
+
+    const handleSaveAmount = async () => {
+        try {
+            const res = await fetch('/api/admin', {
+                method: 'POST', headers: headers(),
+                body: JSON.stringify({ action: 'set_payment_amount', amount: paymentAmount }),
+            });
+            if (res.ok) showToast('✅ Amount saved');
+        } catch { showToast('❌ Failed'); }
+    };
+
+    const handleSaveEmail = async () => {
+        try {
+            const res = await fetch('/api/admin', {
+                method: 'POST', headers: headers(),
+                body: JSON.stringify({ action: 'set_contact_email', email: contactEmail }),
+            });
+            if (res.ok) showToast('✅ Contact email saved');
+        } catch { showToast('❌ Failed'); }
+    };
     const handleMarkPaid = async (cardId: string) => {
         try {
             const res = await fetch('/api/admin', {
@@ -288,8 +323,60 @@ export default function AdminPage() {
                                     <img src={qrImageUrl} alt="QR Code" style={s.qrImage} />
                                 </div>
                             )}
+
+                            {/* UPI ID */}
+                            <h3 style={{ ...s.subTitle, marginTop: '20px' }}>UPI ID (clickable link)</h3>
+                            <p style={s.hint}>
+                                Enter your UPI ID (e.g. yourname@paytm). Users get a clickable &quot;Pay via UPI&quot; button.
+                            </p>
+                            <div style={s.qrInputRow}>
+                                <input
+                                    type="text"
+                                    placeholder="yourname@paytm"
+                                    value={upiId}
+                                    onChange={(e) => setUpiId(e.target.value)}
+                                    style={{ ...s.input, flex: 1 }}
+                                />
+                                <button onClick={handleSaveUpi} style={s.saveQrBtn}>
+                                    Save
+                                </button>
+                            </div>
+
+                            {/* Payment Amount */}
+                            <h3 style={{ ...s.subTitle, marginTop: '16px' }}>Payment Amount (₹)</h3>
+                            <div style={s.qrInputRow}>
+                                <input
+                                    type="number"
+                                    placeholder="143"
+                                    value={paymentAmount}
+                                    onChange={(e) => setPaymentAmount(e.target.value)}
+                                    style={{ ...s.input, flex: 1, maxWidth: '120px' }}
+                                />
+                                <button onClick={handleSaveAmount} style={s.saveQrBtn}>
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     )}
+                </div>
+
+                {/* ── Settings ───────────────────── */}
+                <div style={s.section}>
+                    <h2 style={s.sectionTitle}>⚙️ General Settings</h2>
+                    <h3 style={s.subTitle}>Contact Email</h3>
+                    <p style={s.hint}>Shown at the bottom of cards for reports/complaints.</p>
+                    <div style={s.qrInputRow}>
+                        <input
+                            type="email"
+                            placeholder="contact@yourdomain.com"
+                            value={contactEmail}
+                            onChange={(e) => setContactEmail(e.target.value)}
+                            style={{ ...s.input, flex: 1 }}
+                        />
+                        <button onClick={handleSaveEmail} style={s.saveQrBtn}>
+                            Save
+                        </button>
+                    </div>
                 </div>
 
                 {/* ── Cards Table ─────────────────── */}

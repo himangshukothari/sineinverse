@@ -90,3 +90,4 @@ registerBlock('confession-wall', () => import('@/blocks/confession-wall'));
 registerBlock('love-meter', () => import('@/blocks/love-meter'));
 registerBlock('finale-ask', () => import('@/blocks/finale-ask'));
 registerBlock('photo-puzzle', () => import('@/blocks/photo-puzzle'));
+registerBlock('wax-seal-reveal', () => import('@/blocks/wax-seal-reveal'));

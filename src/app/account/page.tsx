@@ -45,6 +45,9 @@ export default function AccountPage() {
         qrImageUrl: string;
         cardId: string;
         message: string;
+        upiLink?: string;
+        upiId?: string;
+        amount?: string;
     } | null>(null);
     const { toast } = useToast();
 
@@ -159,11 +162,14 @@ export default function AccountPage() {
             }
 
             if (data.mode === 'qr') {
-                // QR mode — show QR popup with card ID
+                // QR mode — show QR popup with card ID + UPI link
                 setQrPaymentData({
                     qrImageUrl: data.qrImageUrl,
                     cardId: data.cardId,
                     message: data.message,
+                    upiLink: data.upiLink || '',
+                    upiId: data.upiId || '',
+                    amount: data.amount || '143',
                 });
                 return;
             }
@@ -250,6 +256,7 @@ export default function AccountPage() {
                                                 </div>
                                                 <div className={styles.cardMeta}>
                                                     <p>To: {card.recipient_name}</p>
+                                                    <p className={styles.cardId}>ID: {card.id.slice(0, 8).toUpperCase()}</p>
                                                     <p>Blocks: {card.blocks?.length || 0}</p>
                                                     <p>Created: {new Date(card.created_at).toLocaleDateString()}</p>
                                                 </div>
@@ -390,9 +397,12 @@ export default function AccountPage() {
                 <div className={styles.qrOverlay} onClick={() => setQrPaymentData(null)}>
                     <div className={styles.qrModal} onClick={(e) => e.stopPropagation()}>
                         <button className={styles.qrCloseBtn} onClick={() => setQrPaymentData(null)}>✕</button>
-                        <h2 className={styles.qrTitle}>📱 Pay via QR Code</h2>
+                        <h2 className={styles.qrTitle}>📱 Pay ₹{qrPaymentData.amount || '143'}</h2>
                         <p className={styles.qrInstruction}>
-                            Scan the QR code below to pay, and <strong>include this Card ID in your payment remarks/message</strong>:
+                            {qrPaymentData.upiLink
+                                ? 'Tap the button below to pay via UPI, or scan the QR code.'
+                                : 'Scan the QR code below to pay.'}
+                            {' '}<strong>Include this Card ID in your payment remarks:</strong>
                         </p>
                         <div className={styles.qrCardId}>
                             <span className={styles.qrCardIdLabel}>Your Card ID</span>
@@ -407,15 +417,26 @@ export default function AccountPage() {
                                 📋 Copy
                             </button>
                         </div>
+
+                        {/* UPI Pay Button */}
+                        {qrPaymentData.upiLink && (
+                            <a
+                                href={qrPaymentData.upiLink}
+                                className={styles.upiPayBtn}
+                            >
+                                💳 Pay ₹{qrPaymentData.amount} via UPI
+                            </a>
+                        )}
+
                         {qrPaymentData.qrImageUrl ? (
                             <img
                                 src={qrPaymentData.qrImageUrl}
                                 alt="UPI QR Code"
                                 className={styles.qrCodeImage}
                             />
-                        ) : (
+                        ) : !qrPaymentData.upiLink ? (
                             <p className={styles.qrNoImage}>QR code not available. Contact admin.</p>
-                        )}
+                        ) : null}
                         <p className={styles.qrNote}>
                             After payment, the admin will verify and activate your card within a few minutes.
                         </p>

@@ -1,0 +1,526 @@
+/**
+ * WAX SEAL REVEAL — Premium CSS
+ *
+ * 3-tap crack mechanic with parchment reveal.
+ * Skins: classic (red), royal (gold), rose (pink)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&display=swap');
+
+/* ═══════ CONTAINER ═══════ */
+.container {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow: hidden;
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* ─── Skins ─── */
+.container[data-skin="classic"] {
+    background: linear-gradient(135deg, #2c1a1a 0%, #1a0f0f 50%, #2c1a1a 100%);
+}
+
+.container[data-skin="royal"] {
+    background: linear-gradient(135deg, #1a1a0f 0%, #0f0f0a 50%, #1a1a0f 100%);
+}
+
+.container[data-skin="rose"] {
+    background: linear-gradient(135deg, #2c1a22 0%, #1a0f15 50%, #2c1a22 100%);
+}
+
+/* ═══════ FLOAT LAYER ═══════ */
+.floatLayer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floatEmoji {
+    position: absolute;
+    opacity: 0.2;
+    animation: glow ease-in-out infinite;
+    will-change: transform;
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.1);
+        opacity: 0.35;
+    }
+}
+
+/* ═══════ SHARD PARTICLES ═══════ */
+.shard {
+    position: absolute;
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 50;
+    animation: shardBurst 1.2s ease-out forwards;
+}
+
+@keyframes shardBurst {
+    0% {
+        opacity: 1;
+        transform: scale(0.5) translate(0, 0) rotate(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5) translate(calc((var(--i, 0) - 6) * 20px),
+                -100px) rotate(180deg);
+    }
+}
+
+.shard:nth-child(1) {
+    --i: 0;
+}
+
+.shard:nth-child(2) {
+    --i: 1;
+}
+
+.shard:nth-child(3) {
+    --i: 2;
+}
+
+.shard:nth-child(4) {
+    --i: 3;
+}
+
+.shard:nth-child(5) {
+    --i: 4;
+}
+
+.shard:nth-child(6) {
+    --i: 5;
+}
+
+.shard:nth-child(7) {
+    --i: 6;
+}
+
+.shard:nth-child(8) {
+    --i: 7;
+}
+
+.shard:nth-child(9) {
+    --i: 8;
+}
+
+.shard:nth-child(10) {
+    --i: 9;
+}
+
+.shard:nth-child(11) {
+    --i: 10;
+}
+
+.shard:nth-child(12) {
+    --i: 11;
+}
+
+/* ═══════ TITLE ═══════ */
+.title {
+    position: relative;
+    z-index: 1;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 2rem;
+    letter-spacing: 0.04em;
+    animation: fadeDown 0.6s ease both;
+}
+
+.container[data-skin="classic"] .title {
+    color: #e8c4c4;
+}
+
+.container[data-skin="royal"] .title {
+    color: #e8dbb0;
+}
+
+.container[data-skin="rose"] .title {
+    color: #e8c4d4;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ═══════ SEAL AREA ═══════ */
+.sealArea {
+    position: relative;
+    z-index: 2;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ─── Parchment (behind seal) ─── */
+.parchment {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.parchmentVisible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.container[data-skin="classic"] .parchment {
+    background: linear-gradient(135deg, #f5ebe0, #ede0d4);
+}
+
+.container[data-skin="royal"] .parchment {
+    background: linear-gradient(135deg, #fef9ef, #f5ebe0);
+}
+
+.container[data-skin="rose"] .parchment {
+    background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+}
+
+.parchmentInner {
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 0.5rem;
+}
+
+.parchmentDecor {
+    font-size: 1.8rem;
+}
+
+.parchmentMsg {
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.container[data-skin="classic"] .parchmentMsg {
+    color: #5c3d2e;
+}
+
+.container[data-skin="royal"] .parchmentMsg {
+    color: #5c4b2e;
+}
+
+.container[data-skin="rose"] .parchmentMsg {
+    color: #5c2e42;
+}
+
+.parchmentFrom {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.7;
+}
+
+.container[data-skin="classic"] .parchmentFrom {
+    color: #8b6f5e;
+}
+
+.container[data-skin="royal"] .parchmentFrom {
+    color: #8b7a4e;
+}
+
+.container[data-skin="rose"] .parchmentFrom {
+    color: #8b4e68;
+}
+
+/* ─── Wax Seal Button ─── */
+.seal {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s;
+    animation: sealAppear 0.8s var(--ease-bounce) both;
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 4px 8px rgba(255, 255, 255, 0.15);
+}
+
+.container[data-skin="classic"] .seal {
+    background: radial-gradient(circle at 40% 35%, #dc2626, #7f1d1d);
+}
+
+.container[data-skin="royal"] .seal {
+    background: radial-gradient(circle at 40% 35%, #eab308, #7c6a0a);
+}
+
+.container[data-skin="rose"] .seal {
+    background: radial-gradient(circle at 40% 35%, #ec4899, #9d174d);
+}
+
+@keyframes sealAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(-15deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.seal:hover {
+    transform: scale(1.06);
+}
+
+.seal:active {
+    transform: scale(0.95);
+    animation: sealShake 0.3s ease;
+}
+
+.sealCracking {
+    animation: sealShake 0.4s ease;
+}
+
+@keyframes sealShake {
+
+    0%,
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    20% {
+        transform: rotate(-3deg) scale(1.02);
+    }
+
+    40% {
+        transform: rotate(3deg) scale(0.98);
+    }
+
+    60% {
+        transform: rotate(-2deg) scale(1.01);
+    }
+
+    80% {
+        transform: rotate(1deg) scale(0.99);
+    }
+}
+
+/* Crack SVG overlay */
+.crackSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.crackLine {
+    animation: crackAppear 0.3s ease both;
+}
+
+@keyframes crackAppear {
+    from {
+        stroke-dasharray: 0 100;
+        opacity: 0;
+    }
+
+    to {
+        stroke-dasharray: 100 0;
+        opacity: 1;
+    }
+}
+
+/* Seal inner decoration */
+.sealRim {
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sealCenter {
+    font-size: 2rem;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.sealEmoji {
+    font-size: 2rem;
+}
+
+.sealRing {
+    position: absolute;
+    inset: 0;
+}
+
+.sealDot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.35);
+    transform-origin: center center;
+}
+
+.sealLabel {
+    position: absolute;
+    bottom: 18px;
+    font-size: 0.45rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ═══════ CONTINUE BUTTON ═══════ */
+.continueBtn {
+    margin-top: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.5s 0.3s both;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.container[data-skin="classic"] .continueBtn {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+}
+
+.container[data-skin="royal"] .continueBtn {
+    background: linear-gradient(135deg, #ca8a04, #7c6a0a);
+}
+
+.container[data-skin="rose"] .continueBtn {
+    background: linear-gradient(135deg, #ec4899, #9d174d);
+}
+
+.continueBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ═══════ HINT ═══════ */
+.hint {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    animation: fadeIn 0.5s 0.5s both;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.container[data-skin="classic"] .hint {
+    color: rgba(232, 196, 196, 0.5);
+}
+
+.container[data-skin="royal"] .hint {
+    color: rgba(232, 219, 176, 0.5);
+}
+
+.container[data-skin="rose"] .hint {
+    color: rgba(232, 196, 212, 0.5);
+}
+
+/* ═══════ BADGE ═══════ */
+.badge {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    z-index: 200;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 400px) {
+    .title {
+        font-size: 1.6rem;
+    }
+
+    .sealArea {
+        width: 230px;
+        height: 230px;
+    }
+
+    .seal {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .sealArea {
+        width: 300px;
+        height: 300px;
+    }
+
+    .seal {
+        width: 160px;
+        height: 160px;
+    }
+}

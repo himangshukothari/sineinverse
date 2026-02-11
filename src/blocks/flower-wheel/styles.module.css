@@ -1,288 +1,321 @@
-/* ============ FLOWER WHEEL BLOCK ============ */
+/**
+ * FLOWER WHEEL — pixel-perfect CSS matching reference images.
+ *
+ * • Soft pink background
+ * • CSS-painted watercolor-style hearts (not emoji)
+ * • Dancing Script cursive title
+ * • Large wheel with coral outer ring
+ * • Column + base stand
+ * • Coral "TAP TO SPIN" button
+ * • Candy-stripe progress bar
+ */
 
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap');
+
+/* ══════════════════════════════════════
+   CONTAINER
+   ══════════════════════════════════════ */
 .container {
     position: relative;
     min-height: 100dvh;
+    background: #f8d4d4;
+    background: linear-gradient(180deg, #fce4ec 0%, #f8d4d4 50%, #fce4ec 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%);
-    overflow: visible;
-    font-family: 'Georgia', serif;
-    color: #881337;
+    padding: 1.5rem 1rem 2rem;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* ============ AMBIENT PARTICLES ============ */
-.particles {
+/* ══════════════════════════════════════
+   CSS HEARTS — watercolor-style
+   ══════════════════════════════════════ */
+.heartsLayer {
     position: absolute;
     inset: 0;
-    overflow: hidden;
     pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
 }
 
-.particle {
+.heart {
     position: absolute;
+    animation: heartDrift ease-in-out infinite;
+    will-change: transform;
+}
+
+/* CSS heart shape via ::before + ::after */
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 160%;
+    border-radius: 50% 50% 0 0;
+    top: 0;
+}
+
+.heart::before {
+    left: 50%;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+
+.heart::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+/* Red variant */
+.heartRed::before,
+.heartRed::after {
+    background: #e57373;
+}
+
+/* Pink variant */
+.heartPink::before,
+.heartPink::after {
+    background: #f48fb1;
+}
+
+@keyframes heartDrift {
+    0% {
+        transform: rotate(var(--r, 0deg)) translateY(0) scale(1);
+    }
+
+    33% {
+        transform: rotate(var(--r, 0deg)) translateY(-8px) scale(1.06);
+    }
+
+    66% {
+        transform: rotate(var(--r, 0deg)) translateY(4px) scale(0.96);
+    }
+
+    100% {
+        transform: rotate(var(--r, 0deg)) translateY(0) scale(1);
+    }
+}
+
+/* ══════════════════════════════════════
+   HEADER / TITLE
+   ══════════════════════════════════════ */
+.header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 0.25rem;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #6d1830;
+    line-height: 1.15;
+    margin: 0;
+}
+
+/* ══════════════════════════════════════
+   CURVED SUBTITLE
+   ══════════════════════════════════════ */
+.subtitleWrap {
+    position: relative;
+    z-index: 1;
+    width: min(310px, 78vw);
+    margin: 0 auto -6px;
+}
+
+.subtitleSvg {
+    width: 100%;
+    display: block;
+}
+
+.subtitleText {
+    fill: #6d1830;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ══════════════════════════════════════
+   WHEEL ASSEMBLY
+   ══════════════════════════════════════ */
+.wheelAssembly {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Pointer notch at top */
+.pointer {
+    position: relative;
+    z-index: 10;
+    margin-bottom: -6px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+/* Coral outer ring */
+.outerRing {
+    width: min(360px, 82vw);
+    height: min(360px, 82vw);
     border-radius: 50%;
-    background: white;
-    opacity: 0.5;
-    animation: pulse 3s infinite ease-in-out;
+    background: linear-gradient(135deg, #c96666, #b85555);
+    padding: 10px;
+    box-shadow:
+        inset 0 2px 4px rgba(255, 255, 255, 0.25),
+        0 6px 24px rgba(160, 64, 64, 0.3);
+}
+
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ─── Stand ─── */
+.standCol {
+    width: 20px;
+    height: 28px;
+    background: linear-gradient(90deg, #c08070, #d09585, #c08070);
+    border-radius: 0 0 3px 3px;
+}
+
+.standBase {
+    width: 100px;
+    height: 14px;
+    background: linear-gradient(180deg, #d09585, #c08070);
+    border-radius: 0 0 50px 50px;
+    box-shadow: 0 3px 8px rgba(120, 60, 50, 0.2);
+}
+
+/* ══════════════════════════════════════
+   TAP TO SPIN BUTTON
+   ══════════════════════════════════════ */
+.spinBtn {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.5rem;
+    padding: 16px 60px;
+    background: linear-gradient(180deg, #c87068, #b85858);
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow:
+        0 4px 0 #8e4040,
+        0 6px 16px rgba(160, 60, 60, 0.35),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15);
+    transition: transform 0.12s, box-shadow 0.12s;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.spinBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 0 #8e4040,
+        0 8px 20px rgba(160, 60, 60, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15);
+}
+
+.spinBtn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow:
+        0 2px 0 #8e4040,
+        0 3px 8px rgba(160, 60, 60, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15);
+}
+
+.spinBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spinBtnActive {
+    animation: pulse 1s ease-in-out infinite;
 }
 
 @keyframes pulse {
 
     0%,
     100% {
-        opacity: 0.3;
-        transform: scale(1);
-    }
-
-    50% {
         opacity: 0.7;
-        transform: scale(1.2);
-    }
-}
-
-/* ============ HEADER ============ */
-.header {
-    text-align: center;
-    margin-bottom: 2rem;
-    z-index: 10;
-    animation: float 3s infinite ease-in-out;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(-8px);
+        opacity: 1;
     }
 }
 
-.title {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    font-weight: bold;
-    background: linear-gradient(135deg, #e11d48, #be123c);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0 0 0.5rem 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.subtitle {
-    font-size: 1.125rem;
-    color: #be123c;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    margin: 0;
-}
-
-/* ============ WHEEL ============ */
-.wheelWrapper {
+/* ══════════════════════════════════════
+   CANDY-STRIPE PROGRESS BAR
+   ══════════════════════════════════════ */
+.progressTrack {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 0;
-}
-
-.pointer {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 30;
-    animation: bounce 1s infinite;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    50% {
-        transform: translateX(-50%) translateY(-6px);
-    }
-}
-
-.wheelContainer {
-    position: relative;
-    width: 340px;
-    height: 340px;
-}
-
-@media (min-width: 768px) {
-    .wheelContainer {
-        width: 420px;
-        height: 420px;
-    }
-}
-
-.wheel {
-    width: 100%;
-    height: 100%;
-    will-change: transform;
-}
-
-.wheelSvg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15));
-}
-
-.petal {
-    transition: transform 0.3s;
-}
-
-.petal:hover {
-    transform: scale(1.03);
-}
-
-.winnerPetal {
-    transform: scale(1.08);
-}
-
-.petalText {
-    text-shadow: 0 1px 2px rgba(136, 19, 55, 0.4);
-    letter-spacing: 0.5px;
-}
-
-/* ============ CENTER ROSE ============ */
-.centerRose {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 20;
-}
-
-.roseOuter {
-    width: 5rem;
-    height: 5rem;
-    background: #fff1f2;
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(225, 29, 72, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.roseInner {
-    width: 4rem;
-    height: 4rem;
-    background: linear-gradient(135deg, #fb7185, #e11d48);
-    border-radius: 50%;
-    border: 4px solid #ffe4e6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.roseCore {
-    animation: pulseSlow 2s infinite ease-in-out;
-}
-
-@keyframes pulseSlow {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-/* ============ SPIN BUTTON ============ */
-.spinButton {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 3rem;
-    margin-top: 2rem;
-    font-size: 1.25rem;
-    font-weight: bold;
-    font-family: 'Georgia', serif;
-    color: white;
-    background: linear-gradient(135deg, #f43f5e, #e11d48);
-    border: none;
-    border-radius: 9999px;
-    cursor: pointer;
-    box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
-    transition: all 0.3s;
+    z-index: 1;
+    width: min(240px, 60vw);
+    height: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    margin-top: 1rem;
     overflow: hidden;
-    z-index: 20;
+    border: 2px solid #d09090;
 }
 
-.spinButton:hover:not(:disabled) {
-    transform: scale(1.05);
-    box-shadow: 0 15px 35px rgba(244, 63, 94, 0.5);
+.progressFill {
+    height: 100%;
+    border-radius: 8px;
+    background: repeating-linear-gradient(-45deg,
+            #e07070,
+            #e07070 5px,
+            #f0a0a0 5px,
+            #f0a0a0 10px);
+    background-size: 14.14px 100%;
+    animation: stripe 0.6s linear infinite;
+    transition: width 0.25s ease-out;
 }
 
-.spinButton:active:not(:disabled) {
-    transform: scale(0.98);
-}
-
-.spinButton.spinning {
-    background: #cbd5e1;
-    cursor: not-allowed;
-    opacity: 0.8;
-    transform: scale(0.95);
-    box-shadow: none;
-}
-
-.spinIcon {
-    width: 1.25rem;
-    height: 1.25rem;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
+@keyframes stripe {
+    0% {
+        background-position: 0 0;
     }
 
-    to {
-        transform: rotate(360deg);
+    100% {
+        background-position: 14.14px 0;
     }
 }
 
-.spinEmoji {
-    transition: transform 0.3s;
-}
-
-.spinButton:hover .spinEmoji {
-    transform: rotate(45deg);
-}
-
-/* ============ MODAL ============ */
-.modalOverlay {
+/* ══════════════════════════════════════
+   MODAL
+   ══════════════════════════════════════ */
+.overlay {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 100;
     padding: 1rem;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease;
+    animation: fadeIn 0.25s ease;
 }
 
 @keyframes fadeIn {
@@ -296,21 +329,20 @@
 }
 
 .modal {
-    position: relative;
-    background: white;
-    border-radius: 1.5rem;
+    background: linear-gradient(135deg, #fff5f5, #fce4ec);
+    border: 2px solid #d09090;
+    border-radius: 24px;
     padding: 2.5rem 2rem;
-    max-width: 400px;
+    max-width: 360px;
     width: 100%;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-    border: 4px solid #ffe4e6;
-    overflow: hidden;
-    animation: zoomIn 0.3s ease;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(160, 60, 60, 0.25);
+    animation: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes zoomIn {
+@keyframes pop {
     from {
-        transform: scale(0.9);
+        transform: scale(0.65);
         opacity: 0;
     }
 
@@ -320,156 +352,141 @@
     }
 }
 
-.modalDecor1 {
-    position: absolute;
-    top: -2.5rem;
-    right: -2.5rem;
-    width: 8rem;
-    height: 8rem;
-    background: #ffe4e6;
-    border-radius: 50%;
-    opacity: 0.5;
-}
-
-.modalDecor2 {
-    position: absolute;
-    bottom: -2.5rem;
-    left: -2.5rem;
-    width: 6rem;
-    height: 6rem;
-    background: #ffe4e6;
-    border-radius: 50%;
-    opacity: 0.5;
-}
-
-.modalContent {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-}
-
-.modalIcon {
-    display: inline-block;
-    font-size: 3rem;
-    padding: 1rem;
-    background: #fff1f2;
-    border-radius: 50%;
-    margin-bottom: 1rem;
+.modalEmoji {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .modalTitle {
-    font-size: 1.75rem;
-    font-weight: bold;
-    color: #e11d48;
-    margin: 0 0 0.5rem 0;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #6d1830;
+    margin: 0 0 0.5rem;
 }
 
-.modalDivider {
-    width: 5rem;
-    height: 4px;
-    background: #fecdd3;
+.modalLine {
+    width: 50px;
+    height: 3px;
+    background: #c96666;
     border-radius: 2px;
     margin: 0 auto 1rem;
 }
 
-.modalMessage {
-    color: #4b5563;
-    font-size: 1.125rem;
-    line-height: 1.6;
-    margin: 0 0 2rem 0;
-}
-
-.acceptButton {
-    width: 100%;
-    padding: 0.875rem 1.5rem;
-    background: #f43f5e;
-    color: white;
-    border: none;
-    border-radius: 0.75rem;
+.modalMsg {
     font-size: 1rem;
-    font-weight: 600;
+    color: #5a3040;
+    line-height: 1.55;
+    margin: 0 0 1.5rem;
+}
+
+.modalBtn {
+    padding: 13px 36px;
+    background: linear-gradient(180deg, #c87068, #b85858);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+    box-shadow: 0 3px 10px rgba(160, 60, 60, 0.3);
+    transition: transform 0.2s;
 }
 
-.acceptButton:hover {
-    background: #e11d48;
-    box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4);
+.modalBtn:hover {
+    transform: translateY(-2px);
 }
 
-/* ============ PREVIEW BADGE ============ */
-.previewBadge {
+/* ══════════════════════════════════════
+   PREVIEW BADGE
+   ══════════════════════════════════════ */
+.badge {
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 0.75rem;
-    border-radius: 9999px;
-    z-index: 100;
+    top: 10px;
+    right: 10px;
+    background: rgba(109, 24, 48, 0.8);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    z-index: 200;
 }
 
-/* ============ RESPONSIVE ============ */
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
 @media (max-width: 480px) {
     .container {
-        padding: 1rem 0.5rem;
-    }
-
-    .header {
-        margin-bottom: 1rem;
+        padding: 1.25rem 0.75rem 1.5rem;
     }
 
     .title {
-        font-size: 1.75rem;
+        font-size: 2.1rem;
     }
 
-    .subtitle {
-        font-size: 0.875rem;
+    .subtitleWrap {
+        width: min(280px, 82vw);
     }
 
-    .wheelWrapper {
-        padding: 1rem 0;
+    .outerRing {
+        width: min(320px, 85vw);
+        height: min(320px, 85vw);
+        padding: 8px;
     }
 
-    .wheelContainer {
-        width: min(85vw, 300px);
-        height: min(85vw, 300px);
-    }
-
-    .spinButton {
-        padding: 0.75rem 1.75rem;
-        font-size: 0.9375rem;
-        margin-top: 1rem;
-    }
-
-    .roseOuter {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-
-    .roseInner {
-        width: 2.75rem;
-        height: 2.75rem;
-    }
-
-    .modal {
-        padding: 1.5rem 1rem;
-    }
-
-    .modalTitle {
-        font-size: 1.35rem;
+    .spinBtn {
+        padding: 14px 48px;
+        font-size: 1rem;
+        letter-spacing: 2.5px;
     }
 }
 
 @media (max-width: 360px) {
-    .wheelContainer {
-        width: min(80vw, 260px);
-        height: min(80vw, 260px);
+    .title {
+        font-size: 1.7rem;
+    }
+
+    .outerRing {
+        width: min(280px, 88vw);
+        height: min(280px, 88vw);
+        padding: 6px;
+    }
+
+    .spinBtn {
+        padding: 12px 36px;
+        font-size: 0.9rem;
+    }
+
+    .progressTrack {
+        width: min(200px, 65vw);
+    }
+}
+
+/* ══════════════════════════════════════
+   DESKTOP / TABLET (wider)
+   ══════════════════════════════════════ */
+@media (min-width: 768px) {
+    .container {
+        padding: 2.5rem 2rem 3rem;
+        justify-content: center;
+        gap: 0;
     }
 
     .title {
-        font-size: 1.5rem;
+        font-size: 3rem;
+    }
+
+    .outerRing {
+        width: 380px;
+        height: 380px;
+    }
+
+    .spinBtn {
+        padding: 18px 72px;
+        font-size: 1.2rem;
+    }
+
+    .progressTrack {
+        width: 280px;
     }
 }

@@ -49,11 +49,11 @@ export async function GET(request: NextRequest) {
     // Get payment mode (disabled | qr | phonepe) — defaults to 'disabled'
     const paymentMode = (await getSetting(supabase, 'payment_mode')) || 'disabled';
 
-    // Get QR image URL
+    // Get QR image URL and UPI ID
     const qrImageUrl = (await getSetting(supabase, 'qr_image_url')) || '';
-
-    // Legacy: check old payments_enabled flag for backward compat
-    const legacyEnabled = await getSetting(supabase, 'payments_enabled');
+    const upiId = (await getSetting(supabase, 'upi_id')) || '';
+    const paymentAmount = (await getSetting(supabase, 'payment_amount')) || '143';
+    const contactEmail = (await getSetting(supabase, 'contact_email')) || '';
 
     // Get all cards with payment info
     const { data: cards } = await supabase
@@ -65,8 +65,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
         paymentMode,
         qrImageUrl,
-        // Backward compat
-        paymentsEnabled: paymentMode !== 'disabled' || (legacyEnabled !== null && legacyEnabled !== 'false'),
+        upiId,
+        paymentAmount,
+        contactEmail,
         cards: cards || [],
     });
 }
@@ -109,6 +110,30 @@ export async function POST(request: NextRequest) {
             if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
             return NextResponse.json({ success: true, qrImageUrl: url.trim() });
+        }
+
+        // ── Set UPI ID ────────────────────────────────
+        case 'set_upi_id': {
+            const upiId = (body.upiId as string || '').trim();
+            const { error } = await upsertSetting(supabase, 'upi_id', upiId);
+            if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+            return NextResponse.json({ success: true, upiId });
+        }
+
+        // ── Set Payment Amount ─────────────────────────
+        case 'set_payment_amount': {
+            const amount = (body.amount as string || '143').trim();
+            const { error } = await upsertSetting(supabase, 'payment_amount', amount);
+            if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+            return NextResponse.json({ success: true, paymentAmount: amount });
+        }
+
+        // ── Set Contact Email ──────────────────────────
+        case 'set_contact_email': {
+            const email = (body.email as string || '').trim();
+            const { error } = await upsertSetting(supabase, 'contact_email', email);
+            if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+            return NextResponse.json({ success: true, contactEmail: email });
         }
 
         // ── Legacy: Toggle Payments ───────────────────

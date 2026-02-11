@@ -64,24 +64,38 @@ export async function POST(request: NextRequest) {
         }
 
         if (paymentMode === 'qr') {
-            // QR mode — return QR image + card ID for user to include in payment remarks
+            // QR mode — return QR image + UPI link + card ID
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const { data: qrData } = await (supabase as any)
                 .from('app_settings')
-                .select('value')
-                .eq('key', 'qr_image_url')
-                .single();
+                .select('key, value')
+                .in('key', ['qr_image_url', 'upi_id', 'payment_amount']);
 
-            const qrImageUrl = qrData?.value || '';
+            const settings: Record<string, string> = {};
+            for (const row of qrData || []) {
+                settings[row.key] = row.value;
+            }
+
+            const qrImageUrl = settings['qr_image_url'] || '';
+            const upiId = settings['upi_id'] || '';
+            const amount = settings['payment_amount'] || '143';
             const shortCardId = cardId.slice(0, 8).toUpperCase();
+
+            // Generate UPI deep link if UPI ID is set
+            const upiLink = upiId
+                ? `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SineInverse&am=${amount}&tn=${shortCardId}`
+                : '';
 
             return NextResponse.json({
                 success: true,
                 mode: 'qr',
                 qrImageUrl,
+                upiId,
+                upiLink,
+                amount,
                 cardId: shortCardId,
                 fullCardId: cardId,
-                message: `Pay via QR and include "${shortCardId}" in your payment remarks/message`,
+                message: `Pay ₹${amount} via QR/UPI and include "${shortCardId}" in your payment remarks`,
             });
         }
 

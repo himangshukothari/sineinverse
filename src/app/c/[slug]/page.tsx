@@ -20,6 +20,7 @@ interface CardData {
     blocks: CardBlockData[];
     status: string;
     expires_at: string | null;
+    contact_email?: string;
 }
 
 // Generate a unique session ID for this card visit
@@ -221,6 +222,12 @@ export default function CardViewPage() {
                     <a href="/" className={styles.createOwn}>
                         Create your own card →
                     </a>
+                    {card.contact_email && (
+                        <a href={`mailto:${card.contact_email}`} className={styles.contactLink}>
+                            📧 Report an issue
+                        </a>
+                    )}
+                    <span className={styles.cardIdBadge}>ID: {card.id.slice(0, 8).toUpperCase()}</span>
                 </div>
             ) : (
                 /* ===== Playing Blocks ===== */
@@ -244,6 +251,7 @@ export default function CardViewPage() {
                             />
                         )}
                     </div>
+                    <span className={styles.cardIdFloat}>ID: {card.id.slice(0, 8).toUpperCase()}</span>
                 </div>
             )}
         </div>
